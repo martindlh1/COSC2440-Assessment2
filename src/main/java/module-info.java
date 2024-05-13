@@ -1,7 +1,9 @@
 module com.example.cosc2440assessment2 {
     requires javafx.controls;
     requires javafx.fxml;
-    requires com.google.gson;
+    requires org.postgresql.jdbc;
+    requires java.sql;
+    requires java.naming;
 
 
     opens com.example.cosc2440assessment2 to javafx.fxml;
