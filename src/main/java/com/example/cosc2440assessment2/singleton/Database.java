@@ -11,14 +11,14 @@ public class Database {
 
     public Database() {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        String[] serverAddresses = { "localhost" };
+        String[] serverAddresses = { "aws-0-ap-southeast-1.pooler.supabase.com" };
         dataSource.setServerNames( serverAddresses );
-        int[] serverPortNumbers = { 5000 };
+        int[] serverPortNumbers = { 5432 };
         dataSource.setPortNumbers( serverPortNumbers );
 //        dataSource.setSslCert( cert );
         dataSource.setDatabaseName( "postgres" );
-        dataSource.setUser( "postgres" );
-        dataSource.setPassword( "admin" );
+        dataSource.setUser( "postgres.ndvppnalkmigbljbkrxk" );
+        dataSource.setPassword( "rR?reW(,CiNF/F5" );
         try {
             db = dataSource.getConnection();
         } catch (SQLException e) {
