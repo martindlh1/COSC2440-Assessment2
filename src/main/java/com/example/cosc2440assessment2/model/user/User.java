@@ -1,4 +1,6 @@
-package com.example.cosc2440assessment2.model;
+package com.example.cosc2440assessment2.model.user;
+
+import com.example.cosc2440assessment2.model.Role;
 
 public class User {
     private String username;

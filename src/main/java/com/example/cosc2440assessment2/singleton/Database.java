@@ -1,4 +1,4 @@
-package com.example.cosc2440assessment2.helper;
+package com.example.cosc2440assessment2.singleton;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import java.sql.Connection;

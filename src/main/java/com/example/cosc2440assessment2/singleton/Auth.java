@@ -1,6 +1,8 @@
-package com.example.cosc2440assessment2.helper;
+package com.example.cosc2440assessment2.singleton;
+
+import com.example.cosc2440assessment2.error.UnauthorizedException;
 import com.example.cosc2440assessment2.model.Role;
-import com.example.cosc2440assessment2.model.User;
+import com.example.cosc2440assessment2.model.user.User;
 
 public class Auth {
     private static Auth INSTANCE;
@@ -28,15 +30,15 @@ public class Auth {
         return INSTANCE;
     }
 
-    public static boolean isAuthorized(Role[] authorizedRoles) {
+    public static void isAuthorized(Role[] authorizedRoles) throws UnauthorizedException {
         if (authorizedRoles.length == 0)
-            return true;
+            return;
         if (getInstance().user == null)
-            return false;
+            throw new UnauthorizedException("Not connected");
         for (Role role : authorizedRoles) {
             if (getInstance().user.getRole().equals(role))
-                return true;
+                return;
         }
-        return false;
+        throw new UnauthorizedException("Role " + getInstance().user.getRole() + " not authorized");
     }
 }
