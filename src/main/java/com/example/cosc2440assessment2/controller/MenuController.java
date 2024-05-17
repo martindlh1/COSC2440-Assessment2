@@ -1,6 +1,7 @@
 package com.example.cosc2440assessment2.controller;
 
 import com.example.cosc2440assessment2.Main;
+import com.example.cosc2440assessment2.service.ModalService;
 import com.example.cosc2440assessment2.singleton.Auth;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -22,13 +23,7 @@ public class MenuController implements Initializable {
     public HBox hbox;
 
     public void showInfo(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/info_modal.fxml"));
-        Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.setScene(new Scene(loader.load()));
-        InfoModal controller = loader.getController();
-        controller.init(auth.getUser());
-        dialog.show();
+        ModalService.showInfo(auth.getUser());
     }
 
     @Override

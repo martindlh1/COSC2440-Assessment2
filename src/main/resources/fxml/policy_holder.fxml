@@ -24,4 +24,8 @@
     <Label style="-fx-font-weight: bold;" alignment="CENTER">My Dependents Claims</Label>
     <ListView maxWidth="500" fx:id="mydependentsclaims"/>
     <Button onAction="#addDependentClaim">Add Dependent Claim</Button>
+
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
 </VBox>
