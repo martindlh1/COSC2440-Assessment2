@@ -25,13 +25,13 @@ public class UserSQLCommand {
     public static User getUserFromRes(ResultSet res) throws SQLException {
         if (!res.next())
             return null;
-        return new User(res.getString("username"), res.getString("password"), res.getString("fullName"), Role.valueOf(res.getString("role")));
+        return new User(res.getString("username"), res.getString("password"), res.getString("fullName"), "", "", "", Role.valueOf(res.getString("role")));
     }
 
     public static List<User> getUsersFromRes(ResultSet res) throws SQLException {
         List<User> users = new ArrayList<>();
         while (res.next()) {
-            User user = new User(res.getString("username"), res.getString("password"), res.getString("fullName"), Role.valueOf(res.getString("role")));
+            User user = new User(res.getString("username"), res.getString("password"), res.getString("fullName"), "", "", "", Role.valueOf(res.getString("role")));
             users.add(user);
         }
         return users;

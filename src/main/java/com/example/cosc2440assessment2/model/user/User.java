@@ -6,12 +6,18 @@ public class User {
     private String username;
     private String password;
     private String fullName;
+    private String email;
+    private String phone;
+    private String address;
     private Role role;
 
-    public User(String username, String password, String fullName, Role role) {
+    public User(String username, String password, String fullName, String email, String phone, String address, Role role) {
         this.username = username;
         this.password = password;
         this.fullName = fullName;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
         this.role = role;
     }
 
@@ -29,5 +35,17 @@ public class User {
 
     public Role getRole() {
         return role;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getAddress() {
+        return address;
     }
 }

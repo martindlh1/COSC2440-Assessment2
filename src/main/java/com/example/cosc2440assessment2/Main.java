@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class Main extends Application {
-    private static Stage stage;
+    public static Stage stage;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -61,5 +61,18 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(fxml));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setScene(scene);
+    }
+
+    public static void openDialog(String fxml, double width, double height) {
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource(fxml));
+        Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        try {
+            Parent root = loader.load();
+            dialog.setScene(new Scene(root, width, height));
+            dialog.show();
+        } catch (IOException exc) {
+            System.err.println(exc.getMessage());
+        }
     }
 }
