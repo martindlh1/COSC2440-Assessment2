@@ -12,7 +12,7 @@
     </padding>
 
     <Label fx:id="state"/>
-    <TextField fx:id="username" promptText="username"></TextField>
-    <TextField fx:id="password" promptText="password"></TextField>
+    <TextField fx:id="username" promptText="username"/>
+    <TextField fx:id="password" promptText="password"/>
     <Button text="Login" onAction="#login"/>
 </VBox>
