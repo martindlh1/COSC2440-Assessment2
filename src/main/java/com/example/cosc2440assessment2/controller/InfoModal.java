@@ -1,10 +1,14 @@
 package com.example.cosc2440assessment2.controller;
 
+import com.example.cosc2440assessment2.model.Role;
 import com.example.cosc2440assessment2.model.user.Dependent;
+import com.example.cosc2440assessment2.model.user.User;
+import com.example.cosc2440assessment2.singleton.Auth;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
@@ -12,12 +16,13 @@ import javafx.scene.layout.GridPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MyInfoModal implements Initializable {
+public class InfoModal implements Initializable {
     public GridPane grid;
-    private Dependent user = new Dependent("dependent", "dependent", "dependent dependent", "dependent@gmail.com", "345678765467", "55 Tran Din Xu");
+    private final Auth auth = Auth.getInstance();
+    private User user;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void init(User u) {
+        user = u;
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(5);
         grid.setVgap(5);
@@ -50,8 +55,32 @@ public class MyInfoModal implements Initializable {
         grid.add(phone, 1, 3);
         grid.add(addressLabel, 0, 4);
         grid.add(address, 1, 4);
+
+        Button update = new Button();
+        update.setText("Update");
+        update.setOnAction(this::updateUser);
+
+        Button delete = new Button();
+        delete.setText("Delete");
+        delete.setOnAction(this::deleteUser);
+
+
+        if (auth.getUser().getRole() == Role.POLICY_OWNER && !auth.getUser().getUsername().equals(user.getUsername())) {
+            grid.add(update, 0, 5);
+            grid.add(delete, 1, 5);
+        } else {
+            grid.add(update, 0, 5);
+        }
     }
 
-    public void updateDependent(ActionEvent event) {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
+
+    public void updateUser(ActionEvent event) {
+    }
+
+    public void deleteUser(ActionEvent event) {
     }
 }

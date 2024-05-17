@@ -11,10 +11,13 @@
       fx:controller="com.example.cosc2440assessment2.controller.MenuController">
     <MenuBar fx:id="menu" layoutY="1.0" prefHeight="25.0" prefWidth="600.0">
         <Menu mnemonicParsing="false" text="My Info">
-            <MenuItem mnemonicParsing="false" text="Update" onAction="#showMyInfo"/>
+            <MenuItem mnemonicParsing="false" text="Update" onAction="#showInfo"/>
         </Menu>
         <Menu text="Auth">
             <MenuItem mnemonicParsing="false" text="Logout" onAction="#logout"/>
+        </Menu>
+        <Menu text="History">
+            <MenuItem mnemonicParsing="false" text="My Actions" onAction="#displayHistory"/>
         </Menu>
     </MenuBar>
 </HBox>

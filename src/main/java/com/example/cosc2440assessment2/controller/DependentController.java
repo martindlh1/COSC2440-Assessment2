@@ -66,7 +66,7 @@ public class DependentController implements Initializable {
         });
     }
 
-    public void showClaim(Claim claim) throws IOException {
+    private void showClaim(Claim claim) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/claim.fxml"));
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);

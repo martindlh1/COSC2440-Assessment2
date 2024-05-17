@@ -8,7 +8,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.cosc2440assessment2.controller.MyInfoModal"
+            fx:controller="com.example.cosc2440assessment2.controller.InfoModal"
             prefHeight="400.0" prefWidth="600.0">
     <Label alignment="CENTER">My Information</Label>
     <GridPane fx:id="grid">
