@@ -2,7 +2,6 @@ package com.example.cosc2440assessment2.controller;
 
 import com.example.cosc2440assessment2.model.ClaimFilter;
 import com.example.cosc2440assessment2.model.ClaimState;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

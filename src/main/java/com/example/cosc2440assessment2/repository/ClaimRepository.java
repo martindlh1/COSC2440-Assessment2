@@ -2,6 +2,7 @@ package com.example.cosc2440assessment2.repository;
 
 import com.example.cosc2440assessment2.model.Claim;
 import com.example.cosc2440assessment2.singleton.Database;
+
 import java.util.List;
 
 public class ClaimRepository {

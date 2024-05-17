@@ -1,7 +1,6 @@
 package com.example.cosc2440assessment2.controller;
 
 import com.example.cosc2440assessment2.model.Role;
-import com.example.cosc2440assessment2.model.user.Dependent;
 import com.example.cosc2440assessment2.model.user.User;
 import com.example.cosc2440assessment2.singleton.Auth;
 import javafx.event.ActionEvent;

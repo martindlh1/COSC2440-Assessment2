@@ -4,14 +4,10 @@ import com.example.cosc2440assessment2.Main;
 import com.example.cosc2440assessment2.service.ModalService;
 import com.example.cosc2440assessment2.singleton.Auth;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.HBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;

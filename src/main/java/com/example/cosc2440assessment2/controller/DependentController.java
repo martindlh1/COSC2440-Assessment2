@@ -1,31 +1,15 @@
 package com.example.cosc2440assessment2.controller;
 
-import com.example.cosc2440assessment2.Main;
 import com.example.cosc2440assessment2.model.Claim;
 import com.example.cosc2440assessment2.model.ClaimState;
-import com.example.cosc2440assessment2.model.Role;
-import com.example.cosc2440assessment2.model.user.Dependent;
-import com.example.cosc2440assessment2.model.user.User;
 import com.example.cosc2440assessment2.service.UserService;
 import com.example.cosc2440assessment2.singleton.Auth;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 

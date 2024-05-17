@@ -8,7 +8,6 @@ import com.example.cosc2440assessment2.model.Claim;
 import com.example.cosc2440assessment2.model.ClaimFilter;
 import com.example.cosc2440assessment2.model.UserFilter;
 import com.example.cosc2440assessment2.model.user.User;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
