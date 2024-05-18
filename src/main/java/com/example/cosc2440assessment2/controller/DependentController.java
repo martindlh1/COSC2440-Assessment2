@@ -2,6 +2,7 @@ package com.example.cosc2440assessment2.controller;
 
 import com.example.cosc2440assessment2.model.Claim;
 import com.example.cosc2440assessment2.model.ClaimState;
+import com.example.cosc2440assessment2.service.ClaimService;
 import com.example.cosc2440assessment2.service.UserService;
 import com.example.cosc2440assessment2.singleton.Auth;
 import javafx.collections.FXCollections;
@@ -22,17 +23,19 @@ import java.util.ResourceBundle;
 
 public class DependentController implements Initializable {
     private final UserService userService = new UserService();
+    private final ClaimService claimService = new ClaimService();
     private final Auth auth = Auth.getInstance();
-    private Claim claim = new Claim(1, new Date(2024, 5, 17), null, new Date(2024, 5, 17), null, new String[]{}, 34, null, ClaimState.APPROVED);
-    private Claim claim2 = new Claim(2, new Date(2024, 5, 17), null, new Date(2024, 5, 17), null, new String[]{}, 56, null, ClaimState.REFUSED);
+//    private Claim claim = new Claim(1, new Date(2024, 5, 17), null, new Date(2024, 5, 17), null, new String[]{}, 34, null, ClaimState.APPROVED);
+//    private Claim claim2 = new Claim(2, new Date(2024, 5, 17), null, new Date(2024, 5, 17), null, new String[]{}, 56, null, ClaimState.REFUSED);
 
     public ListView<Claim> myclaims;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        List<Claim> claims = new ArrayList<>();
-        claims.add(claim);
-        claims.add(claim2);
+//        List<Claim> claims = new ArrayList<>();
+//        claims.add(claim);
+//        claims.add(claim2);
+        List<Claim> claims = claimService.getClaimsByUsername(auth.getUser().getUsername());
         ObservableList<Claim> observableList = FXCollections.observableList(claims);
 
         myclaims.getItems().clear();

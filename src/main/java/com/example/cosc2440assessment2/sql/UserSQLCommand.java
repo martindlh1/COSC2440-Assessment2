@@ -10,15 +10,15 @@ import java.util.List;
 
 public class UserSQLCommand {
     public static String getUserByUsername(String username) {
-        return "SELECT * FROM authuser WHERE (username = '" + username + "');";
+        return "SELECT * FROM user_ WHERE (username = '" + username + "');";
     }
 
     public static String getAllUsers() {
-        return "SELECT * FROM user";
+        return "SELECT * FROM user_";
     }
 
     public static String addUser(User user) {
-        return "INSERT INTO user (username,password,fullName,role) "
+        return "INSERT INTO user_ (username,password,fullName,role) "
                 + "VALUES ('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getFullName() + "', '" + user.getRole() + "');";
     }
 
