@@ -15,6 +15,11 @@ public class UserSQLCommand {
     public static String addUser(User user) {
         return "INSERT INTO user_ (username,password,role,phone,address,email,fullname) VALUES ('" + user.getUsername() + "','" + user.getPassword() + "','" + user.getRole().name() + "','" + user.getPhone() + "','" + user.getAddress() + "','" + user.getEmail() + "','" + user.getFullName() + "');";
     }
+
+    public static String deleteUser(User user) {
+        return "DELETE FROM user_ WHERE username = '" + user.getUsername() + "';";
+    }
+
     public static String addUserWithReturn(User user) {
         return "INSERT INTO user_ (username,password,role,phone,address,email,fullname) VALUES ('" + user.getUsername() + "','" + user.getPassword() + "','" + user.getRole().name() + "','" + user.getPhone() + "','" + user.getAddress() + "','" + user.getEmail() + "','" + user.getFullName() + "') returning \"uID\";";
     }

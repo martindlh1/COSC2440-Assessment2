@@ -41,7 +41,12 @@ public class UserRepository {
     }
 
     public void deleteUser(User user) {
-
+        try {
+            Statement statement = database.getDb().createStatement();
+            statement.executeUpdate(UserSQLCommand.deleteUser(user));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<User> getAllCustomers() {

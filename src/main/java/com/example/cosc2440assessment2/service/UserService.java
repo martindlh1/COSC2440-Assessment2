@@ -38,6 +38,11 @@ public class UserService {
             userRepository.addUser(user);
     }
 
+    public void deleteUser(User user) throws UnauthorizedException {
+        Auth.isAuthorized(new Role[]{Role.ADMIN});
+        userRepository.deleteUser(user);
+    }
+
     public PolicyOwner getPolicyOwner(User user) throws UnauthorizedException {
         Auth.isAuthorized(new Role[]{Role.POLICY_OWNER});
         return userRepository.getPolicyOwner(user);
