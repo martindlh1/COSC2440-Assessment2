@@ -32,6 +32,14 @@ public class UserService {
         return userRepository.getPolicyOwner(user);
     }
 
+    public List<User> getDependentsByHolder(User holder) {
+        return userRepository.getDependentsByHolder(holder);
+    }
+
+    public List<User> getBeneficiariesByOwner(User owner) {
+        return userRepository.getBeneficiariesByOwner(owner);
+    }
+
     public List<User> getAllUsers() {
         return userRepository.getAllUsers();
     }
