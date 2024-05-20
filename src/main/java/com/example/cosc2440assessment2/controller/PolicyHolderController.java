@@ -3,6 +3,7 @@ package com.example.cosc2440assessment2.controller;
 import com.example.cosc2440assessment2.model.Claim;
 import com.example.cosc2440assessment2.model.ClaimState;
 import com.example.cosc2440assessment2.model.user.Dependent;
+import com.example.cosc2440assessment2.model.user.User;
 import com.example.cosc2440assessment2.service.ClaimService;
 import com.example.cosc2440assessment2.service.ModalService;
 import com.example.cosc2440assessment2.service.UserService;
@@ -27,6 +28,7 @@ public class PolicyHolderController implements Initializable {
     public ListView<Dependent> mydependents;
     public ListView<String> myclaims;
     public ListView<String> mydependentsclaims;
+    private List<User> dependents;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -73,8 +75,18 @@ public class PolicyHolderController implements Initializable {
     }
 
     public void addClaim(ActionEvent event) {
+        try {
+            ModalService.showAddClaim(auth.getUser());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void addDependentClaim(ActionEvent event) {
+        try {
+            ModalService.showUserList(dependents);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
