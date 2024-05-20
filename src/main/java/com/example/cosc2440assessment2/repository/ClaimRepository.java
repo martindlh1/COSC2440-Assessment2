@@ -90,7 +90,17 @@ public class ClaimRepository {
     }
 
     public List<Claim> getAllClaims() {
-        return null;
+        try {
+            Statement statement = database.getDb().createStatement();
+            ResultSet res = statement.executeQuery(ClaimSQLCommand.getAllClaims());
+            List<Claim> claims = new ArrayList<>();
+            while (res.next()) {
+                claims.add(new Claim(res.getInt("id"), res.getDate("date"), res.getInt("cID"), res.getString("fullname"), res.getDate("exam_date"), new InsuranceCard(res.getInt("cardID")), null, res.getInt("amount"), null, ClaimState.valueOf(res.getString("status"))));
+            }
+            return claims;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static ClaimRepository getInstance() {

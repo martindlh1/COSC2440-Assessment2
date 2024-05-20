@@ -23,6 +23,27 @@ public class UserRepository {
 
     }
 
+    public List<User> getAllCustomers() {
+        try {
+            Statement statement = database.getDb().createStatement();
+            ResultSet res = statement.executeQuery(UserSQLCommand.getAllCustomers());
+            List<User> users = new ArrayList<>();
+            while (res.next()) {
+                users.add(new User(res.getInt("uID"),
+                        res.getString("username"),
+                        res.getString("password"),
+                        res.getString("fullname"),
+                        res.getString("email"),
+                        res.getString("phone"),
+                        res.getString("address"),
+                        Role.valueOf(res.getString("role"))));
+            }
+            return users;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public List<User> getDependentsByHolder(User holder) {
         try {
             Statement statement = database.getDb().createStatement();

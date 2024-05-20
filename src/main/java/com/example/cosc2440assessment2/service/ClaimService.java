@@ -13,6 +13,10 @@ public class ClaimService {
         return claimRepository.getClaimsByUsername(username);
     }
 
+    public List<Claim> getAllClaims() {
+        return claimRepository.getAllClaims();
+    }
+
     public void addClaim(Claim claim) {
         claimRepository.addClaim(claim);
     }
