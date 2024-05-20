@@ -3,6 +3,8 @@ package com.example.cosc2440assessment2.sql;
 import com.example.cosc2440assessment2.model.Claim;
 import com.example.cosc2440assessment2.model.user.User;
 
+import static java.sql.Types.NULL;
+
 public class ClaimSQLCommand {
     public static String getClaimsByUsername(String username) {
         return "select user_.\"uID\", claim.* from user_, claim where username = '" + username + "' and \"uID\" = claim.\"cID\";";
@@ -23,7 +25,7 @@ public class ClaimSQLCommand {
     }
 
     public static String updateClaim(Claim claim) {
-        return "update claim set \"cardID\" = " + claim.getCard().getId() + ", \"cID\" = " + claim.getInsured() + ", \"date\" = '" + claim.getDate() + "', \"exam_date\" = '" + claim.getExam_date() + "', \"amount\" = " + claim.getAmount() + ", \"status\" = '" + claim.getState() + "' where \"id\" = " + claim.getId() + ";";
+        return "update claim set \"cardID\" = " + claim.getCard().getId() + ", \"cID\" = " + claim.getInsured() + ", \"date\" = '" + claim.getDate() + "', \"exam_date\" = " + (claim.getExam_date() == null ? null : "'" + claim.getExam_date() + "'" ) + ", \"amount\" = " + claim.getAmount() + ", \"status\" = '" + claim.getState() + "' where \"id\" = " + claim.getId() + ";";
     }
 
     public static String getDependentsClaimsByHolder(User user) {

@@ -140,15 +140,31 @@ public class ClaimController {
             function.apply(null);
     }
     public void propose(ActionEvent event) {
-
+        claim.setState(ClaimState.PROPOSED);
+        claimService.updateClaim(claim);
+        ((Stage) grid.getScene().getWindow()).close();
+        if (function != null)
+            function.apply(null);
     }
     public void approve(ActionEvent event) {
-
+        claim.setState(ClaimState.APPROVED);
+        claimService.updateClaim(claim);
+        ((Stage) grid.getScene().getWindow()).close();
+        if (function != null)
+            function.apply(null);
     }
     public void refuse(ActionEvent event) {
-
+        claim.setState(ClaimState.REFUSED);
+        claimService.updateClaim(claim);
+        ((Stage) grid.getScene().getWindow()).close();
+        if (function != null)
+            function.apply(null);
     }
     public void requireMoreInfo(ActionEvent event) {
-
+        claim.setState(ClaimState.MORE_INFO_REQUIRED);
+        claimService.updateClaim(claim);
+        ((Stage) grid.getScene().getWindow()).close();
+        if (function != null)
+            function.apply(null);
     }
 }
