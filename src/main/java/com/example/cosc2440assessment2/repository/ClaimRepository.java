@@ -19,9 +19,21 @@ public class ClaimRepository {
     private final Database database = Database.getInstance();
 
     public void addClaim(Claim claim) {
+        try {
+            Statement statement = database.getDb().createStatement();
+            statement.execute(ClaimSQLCommand.addClaim(claim));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void updateClaim(Claim claim) {
+        try {
+            Statement statement = database.getDb().createStatement();
+            statement.execute(ClaimSQLCommand.updateClaim(claim));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void deleteClaim(Claim claim) {
