@@ -1,3 +1,6 @@
+/**
+ * @author <Team 8>
+ */
 package com.example.cosc2440assessment2.service;
 
 import com.example.cosc2440assessment2.error.UnauthorizedException;
@@ -27,7 +30,7 @@ public class UserService {
     }
 
     public void addUser(User user) throws UnauthorizedException {
-        Auth.isAuthorized(new Role[]{Role.ADMIN});
+        Auth.isAuthorized(new Role[]{Role.ADMIN, Role.POLICY_OWNER});
         userRepository.addUser(user);
     }
 

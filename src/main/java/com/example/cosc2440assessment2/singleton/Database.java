@@ -1,3 +1,6 @@
+/**
+ * @author <Team 8>
+ */
 package com.example.cosc2440assessment2.singleton;
 import org.postgresql.ds.PGSimpleDataSource;
 

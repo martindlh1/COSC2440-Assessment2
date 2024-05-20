@@ -1,3 +1,6 @@
+/**
+ * @author <Team 8>
+ */
 package com.example.cosc2440assessment2.controller;
 
 import com.example.cosc2440assessment2.model.Claim;
@@ -56,8 +59,8 @@ public class PolicyOwnerController implements Initializable {
         }
     }
 
-    public void addBeneficiary(ActionEvent event) {
-
+    public void addBeneficiary(ActionEvent event) throws IOException {
+        ModalService.showAddUser(this::updateBeneficiaries);
     }
 
     public void addBeneficiaryClaim(ActionEvent event) throws IOException {

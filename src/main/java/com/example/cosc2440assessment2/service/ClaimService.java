@@ -1,3 +1,6 @@
+/**
+ * @author <Team 8>
+ */
 package com.example.cosc2440assessment2.service;
 
 import com.example.cosc2440assessment2.error.UnauthorizedException;

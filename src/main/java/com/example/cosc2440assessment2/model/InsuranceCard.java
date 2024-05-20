@@ -1,3 +1,6 @@
+/**
+ * @author <Team 8>
+ */
 package com.example.cosc2440assessment2.model;
 
 import com.example.cosc2440assessment2.model.user.Customer;

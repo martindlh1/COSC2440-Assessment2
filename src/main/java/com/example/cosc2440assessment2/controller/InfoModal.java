@@ -1,3 +1,6 @@
+/**
+ * @author <Team 8>
+ */
 package com.example.cosc2440assessment2.controller;
 
 import com.example.cosc2440assessment2.error.UnauthorizedException;
@@ -82,7 +85,7 @@ public class InfoModal implements Initializable {
         if (auth.getUser().getRole() == Role.POLICY_OWNER && !auth.getUser().getUsername().equals(user.getUsername())) {
             grid.add(update, 0, 5);
             grid.add(delete, 1, 5);
-        } else {
+        } else if (!(user.getRole() == Role.ASSURANCE_SURVEYOR)){
             grid.add(update, 0, 5);
         }
     }

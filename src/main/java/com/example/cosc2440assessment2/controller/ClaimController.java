@@ -1,3 +1,6 @@
+/**
+ * @author <Team 8>
+ */
 package com.example.cosc2440assessment2.controller;
 
 import com.example.cosc2440assessment2.model.Claim;
@@ -122,6 +125,7 @@ public class ClaimController {
                 update.setText("Update");
                 grid.add(update, 0, 6);
             }
+            case ADMIN, DEPENDENT -> {}
         }
     }
     

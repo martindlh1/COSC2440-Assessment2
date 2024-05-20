@@ -1,3 +1,6 @@
+/**
+ * @author <Team 8>
+ */
 package com.example.cosc2440assessment2.service;
 
 import com.example.cosc2440assessment2.controller.*;
@@ -72,6 +75,16 @@ public class ModalService {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setScene(new Scene(loader.load()));
         UserFilterModal controller = loader.getController();
+        controller.init(function);
+        dialog.show();
+    }
+
+    static public void showAddUser(Function<Void, Void> function) throws IOException {
+        FXMLLoader loader = new FXMLLoader(ModalService.class.getResource("/fxml/add_user.fxml"));
+        Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.setScene(new Scene(loader.load()));
+        AddUserModal controller = loader.getController();
         controller.init(function);
         dialog.show();
     }

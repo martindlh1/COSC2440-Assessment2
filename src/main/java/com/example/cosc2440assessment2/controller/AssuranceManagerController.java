@@ -1,3 +1,6 @@
+/**
+ * @author <Team 8>
+ */
 package com.example.cosc2440assessment2.controller;
 
 import com.example.cosc2440assessment2.model.Claim;
@@ -6,6 +9,8 @@ import com.example.cosc2440assessment2.model.ClaimState;
 import com.example.cosc2440assessment2.model.UserFilter;
 import com.example.cosc2440assessment2.model.user.AssuranceSurveyor;
 import com.example.cosc2440assessment2.model.user.Customer;
+import com.example.cosc2440assessment2.model.user.User;
+import com.example.cosc2440assessment2.service.ClaimService;
 import com.example.cosc2440assessment2.service.ModalService;
 import com.example.cosc2440assessment2.service.UserService;
 import com.example.cosc2440assessment2.singleton.Auth;
@@ -24,52 +29,91 @@ import java.util.ResourceBundle;
 public class AssuranceManagerController implements Initializable {
     private final UserService userService = new UserService();
     private final Auth auth = Auth.getInstance();
+    private final ClaimService claimService = new ClaimService();
 
+    private UserFilter userFilter = null;
+    private ClaimFilter claimFilter = null;
+    public ListView<String> surveyors;
+    public ListView<String> claims;
+    public ListView<String> users;
 
-    public ListView<AssuranceSurveyor> surveyors;
-    public ListView<Claim> claims;
-    public ListView<Customer> users;
-
-    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        List<Claim> claimList = new ArrayList<>();
-        claims.setItems(FXCollections.observableList(claimList));
-        claims.setOnMouseClicked(mouseEvent -> {
-            Claim selected = claims.getSelectionModel().getSelectedItem();
-            if (selected != null) {
-//                try {
-//                    ModalService.showClaim(selected);
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
+        updateClaimsList(null);
+        updateUserList(null);
+        List<User> surveyorsList = userService.getSurveyorsByManager(auth.getUser());
+        List<String> surveyorStrings = new ArrayList<>();
+        surveyorsList.forEach(u -> {
+            surveyorStrings.add(u.toString());
+        });
+        surveyors.setItems(FXCollections.observableList(surveyorStrings));
+        surveyors.setOnMouseClicked(mouseEvent -> {
+            String sSelected = surveyors.getSelectionModel().getSelectedItem();
+            if (sSelected != null) {
+                User selected = surveyorsList.get(surveyorStrings.indexOf(sSelected));
+                try {
+                    ModalService.showInfo(selected, null);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
 
-    private void updateClaimsList(ClaimFilter filter) {
-        List<Claim> claimList = new ArrayList<>();
-
-        claims.setItems(FXCollections.observableList(claimList.stream().filter(c -> {
-            if (filter.state.isEmpty())
+    private Void updateClaimsList(Void t) {
+        List<Claim> claimList = claimService.getAllClaims();
+        List<String> claimsString = new ArrayList<>();
+        claimList.forEach(c -> {
+            claimsString.add(c.toString());
+        });
+        List<String> filtered = claimsString.stream().filter(c -> {
+            if (claimFilter == null)
                 return true;
-            if (filter.state.contains(c.getState()))
+            if (claimFilter.state.isEmpty())
                 return true;
-            return false;
-        }).toList()));
+            return claimFilter.state.contains(claimList.get(claimsString.indexOf(c)).getState());
+        }).toList();
+        claims.setOnMouseClicked(mouseEvent -> {
+            String sSelected = claims.getSelectionModel().getSelectedItem();
+            if (sSelected != null) {
+                try {
+                    Claim selected = claimList.get(claimsString.indexOf(sSelected));
+                    ModalService.showClaim(selected, this::updateClaimsList);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        claims.setItems(FXCollections.observableList(filtered));
+        return null;
     }
 
-    private void updateUserList(UserFilter filter) {
-        List<Customer> userList = new ArrayList<>();
-
-        users.setItems(FXCollections.observableList(userList.stream().filter(u -> {
-            if (filter.roles.isEmpty())
+    private Void updateUserList(Void t) {
+        List<User> userList = userService.getAllCustomers();
+        List<String> usersString = new ArrayList<>();
+        userList.forEach(c -> {
+            usersString.add(c.toString());
+        });
+        List<String> filtered = usersString.stream().filter(c -> {
+            if (userFilter == null)
                 return true;
-            if (filter.roles.contains(u.getRole()))
+            if (userFilter.roles.isEmpty())
                 return true;
-            return false;
-        }).toList()));
+            return userFilter.roles.contains(userList.get(usersString.indexOf(c)).getRole());
+        }).toList();
+        users.setOnMouseClicked(mouseEvent -> {
+            String sSelected = users.getSelectionModel().getSelectedItem();
+            if (sSelected != null) {
+                try {
+                    User selected = userList.get(usersString.indexOf(sSelected));
+                    ModalService.showInfo(selected , this::updateUserList);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        users.setItems(FXCollections.observableList(filtered));
+        return null;
     }
-
     public void claimFilter(ActionEvent event) throws IOException {
         ModalService.showClaimFilter(this::setClaimFilter);
     }
@@ -79,12 +123,14 @@ public class AssuranceManagerController implements Initializable {
     }
 
     public Void setClaimFilter(ClaimFilter filter) {
-        updateClaimsList(filter);
+        claimFilter = filter;
+        updateClaimsList(null);
         return null;
     }
 
     public Void setUserFilter(UserFilter filter) {
-        updateUserList(filter);
+        userFilter = filter;
+        updateUserList(null);
         return null;
     }
 }
