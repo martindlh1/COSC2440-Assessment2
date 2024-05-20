@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.cosc2440assessment2.controller.UserListController"
+            prefHeight="400.0" prefWidth="600.0">
+    <GridPane fx:id="grid">
+        <ListView maxWidth="500" fx:id="userlist"/>
+        <Button fx:id="addClaim" onAction="#addClaim">Add Claim</Button>
+    </GridPane>
+</AnchorPane>

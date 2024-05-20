@@ -29,6 +29,7 @@ public class ClaimFilterModal {
         CheckBox approved = new CheckBox("APPROVED");
         CheckBox refused = new CheckBox("REFUSED");
         CheckBox infoRequired = new CheckBox("INFO REQUIRED");
+        CheckBox pending = new CheckBox("PENDING");
         applyFilter.setOnAction(event -> {
             List<ClaimState> states = new ArrayList<>();
             if (proposed.isSelected())
@@ -39,6 +40,8 @@ public class ClaimFilterModal {
                 states.add(ClaimState.REFUSED);
             if (infoRequired.isSelected())
                 states.add(ClaimState.MORE_INFO_REQUIRED);
+            if (pending.isSelected())
+                states.add(ClaimState.PENDING);
             ClaimFilter claimFilter = new ClaimFilter(states);
             setFilter.apply(claimFilter);
             ((Stage) applyFilter.getScene().getWindow()).close();
@@ -48,6 +51,7 @@ public class ClaimFilterModal {
         grid.add(approved, 2, 0);
         grid.add(refused, 3, 0);
         grid.add(infoRequired, 4, 0);
+        grid.add(pending, 5, 0);
         grid.add(applyFilter, 0, 1);
     }
 }

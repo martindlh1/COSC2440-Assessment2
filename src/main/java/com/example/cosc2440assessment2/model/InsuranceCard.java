@@ -14,4 +14,8 @@ public class InsuranceCard {
     public Number getId() {
         return id;
     }
+
+    public InsuranceCard(Number id) {
+        this.id = id;
+    }
 }

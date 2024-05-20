@@ -1,7 +1,9 @@
 package com.example.cosc2440assessment2.controller;
 
+import com.example.cosc2440assessment2.error.UnauthorizedException;
 import com.example.cosc2440assessment2.model.Role;
 import com.example.cosc2440assessment2.model.user.User;
+import com.example.cosc2440assessment2.service.UserService;
 import com.example.cosc2440assessment2.singleton.Auth;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -10,7 +12,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+import org.w3c.dom.Text;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,7 +23,13 @@ import java.util.ResourceBundle;
 public class InfoModal implements Initializable {
     public GridPane grid;
     private final Auth auth = Auth.getInstance();
+    private final UserService userService = new UserService();
     private User user;
+    TextField fullName;
+    TextField username;
+    TextField email;
+    TextField phone;
+    TextField address;
 
     public void init(User u) {
         user = u;
@@ -33,15 +44,16 @@ public class InfoModal implements Initializable {
         Label phoneLabel = new Label("Phone Number");
         Label addressLabel = new Label("Address");
 
-        TextArea fullName = new TextArea(user.getFullName());
+        fullName = new TextField(user.getFullName());
         fullName.setMaxHeight(10);
-        TextArea username = new TextArea(user.getUsername());
+        username = new TextField(user.getUsername());
+        username.setEditable(false);
         username.setMaxHeight(10);
-        TextArea email = new TextArea(user.getEmail());
+        email = new TextField(user.getEmail());
         email.setMaxHeight(10);
-        TextArea phone = new TextArea(user.getPhone());
+        phone = new TextField(user.getPhone());
         phone.setMaxHeight(10);
-        TextArea address = new TextArea(user.getAddress());
+        address = new TextField(user.getAddress());
         address.setMaxHeight(10);
 
         grid.add(fullNameLabel, 0, 0);
@@ -78,6 +90,17 @@ public class InfoModal implements Initializable {
     }
 
     public void updateUser(ActionEvent event) {
+        User newUser = user;
+        newUser.setEmail(email.getText());
+        newUser.setAddress(address.getText());
+        newUser.setPhone(phone.getText());
+        newUser.setFullName(fullName.getText());
+        try {
+            userService.updateUser(newUser);
+        } catch (UnauthorizedException e) {
+            throw new RuntimeException(e);
+        }
+        ((Stage) username.getScene().getWindow()).close();
     }
 
     public void deleteUser(ActionEvent event) {

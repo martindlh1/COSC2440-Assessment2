@@ -14,7 +14,9 @@ public class UserSQLCommand {
     }
 
     public static String updateUser(User user) {
-        return "update user_ set username = '" + user.getUsername() + "', phone = '" + user.getPhone() + "', email = '" + user.getEmail() + "', address = '" + user.getAddress() + "', fullName = '" + user.getFullName() + "' where username = '" + user.getUsername() + "';";
+        String sql = "update user_ set username = '" + user.getUsername() + "', phone = '" + user.getPhone() + "', email = '" + user.getEmail() + "', address = '" + user.getAddress() + "', fullname = '" + user.getFullName() + "' where username = '" + user.getUsername() + "';";
+        System.out.println(sql);
+        return sql;
     }
 
     public static String getDependentsByHolder(User user) {
@@ -39,13 +41,13 @@ public class UserSQLCommand {
     public static User getUserFromRes(ResultSet res) throws SQLException {
         if (!res.next())
             return null;
-        return new User(res.getString("username"), res.getString("password"), res.getString("fullName"), "", "", "", Role.valueOf(res.getString("role")));
+        return new User(res.getString("username"), res.getString("password"), res.getString("fullname"), "", "", "", Role.valueOf(res.getString("role")));
     }
 
     public static List<User> getUsersFromRes(ResultSet res) throws SQLException {
         List<User> users = new ArrayList<>();
         while (res.next()) {
-            User user = new User(res.getString("username"), res.getString("password"), res.getString("fullName"), "", "", "", Role.valueOf(res.getString("role")));
+            User user = new User(res.getString("username"), res.getString("password"), res.getString("fullname"), "", "", "", Role.valueOf(res.getString("role")));
             users.add(user);
         }
         return users;

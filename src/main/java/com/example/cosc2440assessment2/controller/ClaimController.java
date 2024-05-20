@@ -2,19 +2,34 @@ package com.example.cosc2440assessment2.controller;
 
 import com.example.cosc2440assessment2.model.Claim;
 import com.example.cosc2440assessment2.model.ClaimState;
+import com.example.cosc2440assessment2.model.Role;
+import com.example.cosc2440assessment2.service.ClaimService;
 import com.example.cosc2440assessment2.singleton.Auth;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
+import java.util.function.Function;
 
 public class ClaimController {
     public GridPane grid;
+    private Function<Void, Void> function;
+    private final ClaimService claimService = new ClaimService();
     private final Auth auth = Auth.getInstance();
+    private Claim claim;
+    TextField id;
+    TextField date;
+    TextField insured;
+    DatePicker examDate;
+    TextField amount;
+    TextField state;
 
-    public void init(Claim claim) {
+    public void init(Claim claim, Function<Void, Void> function) {
+        this.claim = claim;
+        this.function = function;
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(5);
         grid.setVgap(5);
@@ -27,17 +42,28 @@ public class ClaimController {
         Label lAmount = new Label("Amount");
         Label lState = new Label("State");
 
-        TextArea id = new TextArea(claim.getId().toString());
+
+        id = new TextField(claim.getId().toString());
         id.setMaxHeight(10);
-        TextArea date = new TextArea(claim.getDate().toString());
+        id.setEditable(false);
+        date = new TextField(claim.getDate().toString());
         date.setMaxHeight(10);
-        TextArea insured = new TextArea("claim.getInsured().toString()");
+        date.setEditable(false);
+        insured = new TextField(claim.getInsured() == null ? "N/A" : claim.getInsured().toString());
         insured.setMaxHeight(10);
-        TextArea examDate = new TextArea(claim.getExam_date().toString());
+        insured.setEditable(false);
+        examDate = new DatePicker();
+        if (claim.getExam_date() != null)
+            examDate.setValue(claim.getExam_date().toLocalDate());
         examDate.setMaxHeight(10);
-        TextArea amount = new TextArea(claim.getAmount().toString());
+        if (auth.getUser().getRole() == Role.DEPENDENT)
+            examDate.setEditable(false);
+        amount = new TextField(claim.getAmount() == null ? "N/A": claim.getAmount().toString());
         amount.setMaxHeight(10);
-        TextArea state = new TextArea(claim.getState().name());
+        if (auth.getUser().getRole() == Role.DEPENDENT)
+            amount.setEditable(false);
+        state = new TextField(claim.getState().name());
+        state.setEditable(false);
         state.setMaxHeight(10);
 
         grid.add(lId, 0, 0);
@@ -55,19 +81,25 @@ public class ClaimController {
 
         switch (auth.getUser().getRole()) {
             case ASSURANCE_SURVEYOR -> {
-                Button propose = new Button();
-                propose.setText("Propose to Manager");
-                grid.add(propose, 0, 6);
-                Button require = new Button();
-                require.setText("Require more info");
-                grid.add(require, 1, 6);
+                if (claim.getState() == ClaimState.PENDING) {
+                    Button propose = new Button();
+                    propose.setOnAction(this::propose);
+                    propose.setText("Propose to Manager");
+                    grid.add(propose, 0, 6);
+                    Button require = new Button();
+                    require.setOnAction(this::requireMoreInfo);
+                    require.setText("Require more info");
+                    grid.add(require, 1, 6);
+                }
             }
             case ASSURANCE_MANAGER -> {
                 if (claim.getState() == ClaimState.PROPOSED) {
                     Button approve = new Button();
                     approve.setText("Approve");
+                    approve.setOnAction(this::approve);
                     grid.add(approve, 0, 6);
                     Button refuse = new Button();
+                    refuse.setOnAction(this::refuse);
                     refuse.setText("Refuse");
                     grid.add(refuse, 1, 6);
                 }
@@ -75,16 +107,42 @@ public class ClaimController {
             case POLICY_OWNER -> {
                 Button update = new Button();
                 update.setText("Update");
+                update.setOnAction(this::update);
                 grid.add(update, 0, 6);
                 Button delete = new Button();
+                delete.setOnAction(this::delete);
                 delete.setText("Delete");
                 grid.add(delete, 1, 6);
             }
             case POLICY_HOLDER -> {
                 Button update = new Button();
+                update.setOnAction(this::update);
                 update.setText("Update");
                 grid.add(update, 0, 6);
             }
         }
+    }
+    
+    public void update(ActionEvent event) {
+        claim.setExam_date(java.sql.Date.valueOf(examDate.getValue()));
+        claim.setAmount(Integer.parseInt(amount.getText()));
+        claimService.updateClaim(claim);
+        ((Stage) grid.getScene().getWindow()).close();
+        function.apply(null);
+    }
+    public void delete(ActionEvent event) {
+
+    }
+    public void propose(ActionEvent event) {
+
+    }
+    public void approve(ActionEvent event) {
+
+    }
+    public void refuse(ActionEvent event) {
+
+    }
+    public void requireMoreInfo(ActionEvent event) {
+
     }
 }
