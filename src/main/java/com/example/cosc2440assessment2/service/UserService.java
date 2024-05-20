@@ -17,6 +17,10 @@ public class UserService {
         return userRepository.getUserByUsername(username);
     }
 
+    public List<User> getAllCustomers() {
+        return userRepository.getAllCustomers();
+    }
+
     public void updateUser(User user) throws UnauthorizedException {
         Auth.isAuthorized(new Role[]{});
         userRepository.updateUser(user);
