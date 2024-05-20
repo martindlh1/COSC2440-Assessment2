@@ -13,6 +13,10 @@ public class UserSQLCommand {
         return "SELECT * FROM user_ WHERE (username = '" + username + "');";
     }
 
+    public static String updateUser(User user) {
+        return "update user_ set username = '" + user.getUsername() + "', phone = '" + user.getPhone() + "', email = '" + user.getEmail() + "', address = '" + user.getAddress() + "', fullName = '" + user.getFullName() + "' where username = '" + user.getUsername() + "';";
+    }
+
     public static String getAllUsers() {
         return "SELECT * FROM user_";
     }

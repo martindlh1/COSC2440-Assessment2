@@ -17,6 +17,11 @@ public class UserService {
         return userRepository.getUserByUsername(username);
     }
 
+    public void updateUser(User user) throws UnauthorizedException {
+        Auth.isAuthorized(new Role[]{});
+        userRepository.updateUser(user);
+    }
+
     public void addUser(User user) throws UnauthorizedException {
         Auth.isAuthorized(new Role[]{Role.ADMIN});
         userRepository.addUser(user);

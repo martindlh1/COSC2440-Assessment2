@@ -22,6 +22,15 @@ public class UserRepository {
 
     }
 
+    public void updateUser(User user) {
+        try {
+            Statement statement = database.getDb().createStatement();
+            statement.executeUpdate(UserSQLCommand.updateUser(user));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public User getUserByUsername(String username) {
         try {
             Statement statement = database.getDb().createStatement();
