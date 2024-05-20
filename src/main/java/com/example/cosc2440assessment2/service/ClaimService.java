@@ -11,4 +11,12 @@ public class ClaimService {
     public List<Claim> getClaimsByUsername(String username) {
         return claimRepository.getClaimsByUsername(username);
     }
+
+    public void addClaim(Claim claim) {
+        claimRepository.addClaim(claim);
+    }
+
+    public void updateClaim(Claim claim) {
+        claimRepository.updateClaim(claim);
+    }
 }

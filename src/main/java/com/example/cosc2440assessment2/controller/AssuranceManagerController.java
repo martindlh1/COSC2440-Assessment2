@@ -42,11 +42,11 @@ public class AssuranceManagerController implements Initializable {
         claims.setOnMouseClicked(mouseEvent -> {
             Claim selected = claims.getSelectionModel().getSelectedItem();
             if (selected != null) {
-                try {
-                    ModalService.showClaim(selected);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+//                try {
+//                    ModalService.showClaim(selected);
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
             }
         });
     }

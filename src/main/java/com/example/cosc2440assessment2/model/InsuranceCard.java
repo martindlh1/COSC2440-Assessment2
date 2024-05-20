@@ -10,4 +10,12 @@ public class InsuranceCard {
     private PolicyOwner owner;
     private Customer holder;
     private Date expiration_date;
+
+    public Number getId() {
+        return id;
+    }
+
+    public InsuranceCard(Number id) {
+        this.id = id;
+    }
 }

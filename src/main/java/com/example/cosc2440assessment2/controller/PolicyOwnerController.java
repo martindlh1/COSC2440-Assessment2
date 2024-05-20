@@ -48,7 +48,7 @@ public class PolicyOwnerController implements Initializable {
             Claim selected = myclaims.getSelectionModel().getSelectedItem();
             if (selected != null) {
                 try {
-                    ModalService.showClaim(selected);
+                    ModalService.showClaim(selected, null);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

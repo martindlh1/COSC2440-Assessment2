@@ -3,6 +3,7 @@ package com.example.cosc2440assessment2.model.user;
 import com.example.cosc2440assessment2.model.Role;
 
 public class User {
+    private Integer id;
     private String username;
     private String password;
     private String fullName;
@@ -10,6 +11,17 @@ public class User {
     private String phone;
     private String address;
     private Role role;
+
+    public User(Integer id, String username, String password, String fullName, String email, String phone, String address, Role role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.fullName = fullName;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.role = role;
+    }
 
     public User(String username, String password, String fullName, String email, String phone, String address, Role role) {
         this.username = username;
@@ -39,6 +51,10 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getPhone() {

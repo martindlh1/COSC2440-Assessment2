@@ -3,27 +3,33 @@ package com.example.cosc2440assessment2.controller;
 import com.example.cosc2440assessment2.model.Claim;
 import com.example.cosc2440assessment2.model.ClaimState;
 import com.example.cosc2440assessment2.model.Role;
+import com.example.cosc2440assessment2.service.ClaimService;
 import com.example.cosc2440assessment2.singleton.Auth;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
+import java.util.function.Function;
 
 public class ClaimController {
     public GridPane grid;
+    private Function<Void, Void> function;
+    private final ClaimService claimService = new ClaimService();
     private final Auth auth = Auth.getInstance();
+    private Claim claim;
     TextField id;
     TextField date;
     TextField insured;
-    TextField examDate;
+    DatePicker examDate;
     TextField amount;
     TextField state;
 
-    public void init(Claim claim) {
+    public void init(Claim claim, Function<Void, Void> function) {
+        this.claim = claim;
+        this.function = function;
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(5);
         grid.setVgap(5);
@@ -43,10 +49,12 @@ public class ClaimController {
         date = new TextField(claim.getDate().toString());
         date.setMaxHeight(10);
         date.setEditable(false);
-        insured = new TextField(claim.getInsured() == null ? "N/A" : claim.getInsured().getFullName());
+        insured = new TextField(claim.getInsured() == null ? "N/A" : claim.getInsured().toString());
         insured.setMaxHeight(10);
         insured.setEditable(false);
-        examDate = new TextField(claim.getExam_date() == null ? "N/A" : claim.getExam_date().toString());
+        examDate = new DatePicker();
+        if (claim.getExam_date() != null)
+            examDate.setValue(claim.getExam_date().toLocalDate());
         examDate.setMaxHeight(10);
         if (auth.getUser().getRole() == Role.DEPENDENT)
             examDate.setEditable(false);
@@ -116,7 +124,11 @@ public class ClaimController {
     }
     
     public void update(ActionEvent event) {
-        
+        claim.setExam_date(java.sql.Date.valueOf(examDate.getValue()));
+        claim.setAmount(Integer.parseInt(amount.getText()));
+        claimService.updateClaim(claim);
+        ((Stage) grid.getScene().getWindow()).close();
+        function.apply(null);
     }
     public void delete(ActionEvent event) {
 

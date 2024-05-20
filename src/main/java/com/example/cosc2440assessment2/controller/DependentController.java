@@ -46,7 +46,7 @@ public class DependentController implements Initializable {
             Claim selected = claims.get(claimStrings.indexOf(sSelected));
             if (selected != null) {
                 try {
-                    ModalService.showClaim(selected);
+                    ModalService.showClaim(selected, null);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

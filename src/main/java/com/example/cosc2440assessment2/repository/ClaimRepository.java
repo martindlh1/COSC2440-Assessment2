@@ -2,6 +2,7 @@ package com.example.cosc2440assessment2.repository;
 
 import com.example.cosc2440assessment2.model.Claim;
 import com.example.cosc2440assessment2.model.ClaimState;
+import com.example.cosc2440assessment2.model.InsuranceCard;
 import com.example.cosc2440assessment2.model.Role;
 import com.example.cosc2440assessment2.model.user.User;
 import com.example.cosc2440assessment2.singleton.Database;
@@ -19,9 +20,21 @@ public class ClaimRepository {
     private final Database database = Database.getInstance();
 
     public void addClaim(Claim claim) {
+        try {
+            Statement statement = database.getDb().createStatement();
+            statement.execute(ClaimSQLCommand.addClaim(claim));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void updateClaim(Claim claim) {
+        try {
+            Statement statement = database.getDb().createStatement();
+            statement.execute(ClaimSQLCommand.updateClaim(claim));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void deleteClaim(Claim claim) {
@@ -34,8 +47,7 @@ public class ClaimRepository {
             ResultSet res = statement.executeQuery(ClaimSQLCommand.getClaimsByUsername(username));
             List<Claim> claims = new ArrayList<>();
             while (res.next()) {
-
-                claims.add(new Claim(res.getInt("id"), res.getDate("date"), null, null, null, null, null, null, ClaimState.valueOf(res.getString("status"))));
+                claims.add(new Claim(res.getInt("id"), res.getDate("date"), res.getInt("cID"), res.getDate("exam_date"), new InsuranceCard(res.getInt("cardID")), null, res.getInt("amount"), null, ClaimState.valueOf(res.getString("status"))));
             }
 //            return new User(res.getString("username"), res.getString("password"), res.getString("fullName"), "", "", "", Role.valueOf(res.getString("role")));
             return claims;

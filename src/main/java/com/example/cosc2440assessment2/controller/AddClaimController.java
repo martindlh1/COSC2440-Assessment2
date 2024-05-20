@@ -1,7 +1,12 @@
 package com.example.cosc2440assessment2.controller;
 
+import com.example.cosc2440assessment2.model.Claim;
+import com.example.cosc2440assessment2.model.ClaimState;
+import com.example.cosc2440assessment2.model.InsuranceCard;
 import com.example.cosc2440assessment2.model.Role;
+import com.example.cosc2440assessment2.model.user.Customer;
 import com.example.cosc2440assessment2.model.user.User;
+import com.example.cosc2440assessment2.service.ClaimService;
 import com.example.cosc2440assessment2.singleton.Auth;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -12,17 +17,24 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 import java.sql.Date;
+import java.util.function.Function;
 
 public class AddClaimController {
+    private final ClaimService claimService = new ClaimService();
+    private Customer customer;
+    private Function<Void, Void> function;
     public GridPane grid;
     TextField date;
     TextField insured;
     DatePicker examDate;
     TextField amount;
 
-    public void init(User user) {
+    public void init(Customer customer, Function<Void, Void> function) {
+        this.function = function;
+        this.customer = customer;
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(5);
         grid.setVgap(5);
@@ -36,7 +48,7 @@ public class AddClaimController {
         date = new TextField(new Date(System.currentTimeMillis()).toString());
         date.setMaxHeight(10);
         date.setEditable(false);
-        insured = new TextField(user.getFullName());
+        insured = new TextField(customer.getFullName());
         insured.setMaxHeight(10);
         insured.setEditable(false);
         examDate = new DatePicker();
@@ -58,6 +70,9 @@ public class AddClaimController {
     }
 
     public void addClaim(ActionEvent event) {
-
+        Claim claim = new Claim(new Date(System.currentTimeMillis()), customer.getId(), java.sql.Date.valueOf(examDate.getValue()), new InsuranceCard(1), null, Integer.valueOf(amount.getText()), null, ClaimState.PENDING);
+        claimService.addClaim(claim);
+        ((Stage) grid.getScene().getWindow()).close();
+        function.apply(null);
     }
 }

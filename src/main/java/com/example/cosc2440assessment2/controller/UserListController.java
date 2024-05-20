@@ -1,5 +1,6 @@
 package com.example.cosc2440assessment2.controller;
 
+import com.example.cosc2440assessment2.model.user.Customer;
 import com.example.cosc2440assessment2.model.user.User;
 import com.example.cosc2440assessment2.service.ModalService;
 import com.example.cosc2440assessment2.service.UserService;
@@ -41,7 +42,7 @@ public class UserListController {
 
     public void addClaim(ActionEvent event) {
         try {
-            ModalService.showAddClaim(selected);
+            ModalService.showAddClaim((Customer) selected, null);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

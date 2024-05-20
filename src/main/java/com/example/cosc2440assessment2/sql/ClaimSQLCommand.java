@@ -8,6 +8,12 @@ public class ClaimSQLCommand {
     }
 
     public static String addClaim(Claim claim) {
-        return null;
+        String sql = "insert into claim (\"cID\", \"cardID\", \"date\", \"exam_date\", \"amount\", \"status\") values (" + claim.getInsured() + ", " + claim.getCard().getId() + ", '" + claim.getDate() + "', '" + claim.getExam_date() + "', " + claim.getAmount() + ", '" + claim.getState() + "');";
+        System.out.println(sql);
+        return sql;
+    }
+
+    public static String updateClaim(Claim claim) {
+        return "update claim set \"cardID\" = " + claim.getCard().getId() + ", \"cID\" = " + claim.getInsured() + ", \"date\" = '" + claim.getDate() + "', \"exam_date\" = '" + claim.getExam_date() + "', \"amount\" = " + claim.getAmount() + ", \"status\" = '" + claim.getState() + "' where \"id\" = " + claim.getId() + ";";
     }
 }
