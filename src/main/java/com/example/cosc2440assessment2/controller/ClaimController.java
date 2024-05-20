@@ -27,15 +27,16 @@ public class ClaimController {
         Label lAmount = new Label("Amount");
         Label lState = new Label("State");
 
+
         TextArea id = new TextArea(claim.getId().toString());
         id.setMaxHeight(10);
         TextArea date = new TextArea(claim.getDate().toString());
         date.setMaxHeight(10);
-        TextArea insured = new TextArea("claim.getInsured().toString()");
+        TextArea insured = new TextArea(claim.getInsured() == null ? "N/A" : claim.getInsured().getFullName());
         insured.setMaxHeight(10);
-        TextArea examDate = new TextArea(claim.getExam_date().toString());
+        TextArea examDate = new TextArea(claim.getExam_date() == null ? "N/A" : claim.getExam_date().toString());
         examDate.setMaxHeight(10);
-        TextArea amount = new TextArea(claim.getAmount().toString());
+        TextArea amount = new TextArea(claim.getAmount() == null ? "N/A": claim.getAmount().toString());
         amount.setMaxHeight(10);
         TextArea state = new TextArea(claim.getState().name());
         state.setMaxHeight(10);
@@ -55,12 +56,14 @@ public class ClaimController {
 
         switch (auth.getUser().getRole()) {
             case ASSURANCE_SURVEYOR -> {
-                Button propose = new Button();
-                propose.setText("Propose to Manager");
-                grid.add(propose, 0, 6);
-                Button require = new Button();
-                require.setText("Require more info");
-                grid.add(require, 1, 6);
+                if (claim.getState() == ClaimState.PENDING) {
+                    Button propose = new Button();
+                    propose.setText("Propose to Manager");
+                    grid.add(propose, 0, 6);
+                    Button require = new Button();
+                    require.setText("Require more info");
+                    grid.add(require, 1, 6);
+                }
             }
             case ASSURANCE_MANAGER -> {
                 if (claim.getState() == ClaimState.PROPOSED) {

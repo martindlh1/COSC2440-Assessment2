@@ -8,6 +8,6 @@ public class ClaimSQLCommand {
     }
 
     public static String addClaim(Claim claim) {
-
+        return null;
     }
 }

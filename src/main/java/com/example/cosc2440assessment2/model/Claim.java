@@ -62,4 +62,13 @@ public class Claim {
     public ClaimState getState() {
         return state;
     }
+
+    @Override
+    public String toString() {
+        return date + " - " +
+                (insured == null ? "N/A" : insured.getFullName()) + " - " +
+                (amount == null ? "N/A" : amount.toString()) + " - " +
+                (exam_date == null ? "N/A" : exam_date) + " - " +
+                state;
+    }
 }

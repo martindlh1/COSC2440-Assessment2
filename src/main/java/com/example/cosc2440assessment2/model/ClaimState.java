@@ -5,4 +5,5 @@ public enum ClaimState {
     REFUSED,
     MORE_INFO_REQUIRED,
     PROPOSED,
+    PENDING
 }

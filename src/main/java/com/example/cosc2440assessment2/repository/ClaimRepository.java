@@ -34,7 +34,8 @@ public class ClaimRepository {
             ResultSet res = statement.executeQuery(ClaimSQLCommand.getClaimsByUsername(username));
             List<Claim> claims = new ArrayList<>();
             while (res.next()) {
-                claims.add(new Claim(res.getInt("id"), res.getDate("date"), null, null, null, null, null, null, ClaimState.APPROVED));
+
+                claims.add(new Claim(res.getInt("id"), res.getDate("date"), null, null, null, null, null, null, ClaimState.valueOf(res.getString("status"))));
             }
 //            return new User(res.getString("username"), res.getString("password"), res.getString("fullName"), "", "", "", Role.valueOf(res.getString("role")));
             return claims;

@@ -3,6 +3,7 @@ package com.example.cosc2440assessment2.controller;
 import com.example.cosc2440assessment2.model.Claim;
 import com.example.cosc2440assessment2.model.ClaimState;
 import com.example.cosc2440assessment2.model.user.Dependent;
+import com.example.cosc2440assessment2.service.ClaimService;
 import com.example.cosc2440assessment2.service.ModalService;
 import com.example.cosc2440assessment2.service.UserService;
 import com.example.cosc2440assessment2.singleton.Auth;
@@ -21,33 +22,32 @@ import java.util.ResourceBundle;
 public class PolicyHolderController implements Initializable {
     private final UserService userService = new UserService();
     private final Auth auth = Auth.getInstance();
-    private Dependent dependent = new Dependent("dependent", "dependent", "dependent", "dependent@gmail.com", "4567890", "3456 FGHJK");
-    private Claim claim = new Claim(1, new Date(2024, 5, 17), null, new Date(2024, 5, 17), null, new String[]{}, 34, null, ClaimState.APPROVED);
-    private Claim claim2 = new Claim(2, new Date(2024, 5, 17), null, new Date(2024, 5, 17), null, new String[]{}, 56, null, ClaimState.REFUSED);
-
+    private final ClaimService claimService = new ClaimService();
 
     public ListView<Dependent> mydependents;
-    public ListView<Claim> myclaims;
-    public ListView<Claim> mydependentsclaims;
+    public ListView<String> myclaims;
+    public ListView<String> mydependentsclaims;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        List<Claim> claims = new ArrayList<>();
-        claims.add(claim);
-        claims.add(claim2);
-        myclaims.setItems(FXCollections.observableList(claims));
+        List<Claim> claims = claimService.getClaimsByUsername(auth.getUser().getUsername());
+        List<String> claimStrings = new ArrayList<>();
+        claims.forEach(claim -> {
+            claimStrings.add(claim.toString());
+        });
+        myclaims.setItems(FXCollections.observableList(claimStrings));
         myclaims.setOnMouseClicked(mouseEvent -> {
-            Claim selected = myclaims.getSelectionModel().getSelectedItem();
+            String sSelected = myclaims.getSelectionModel().getSelectedItem();
+            Claim selected = claims.get(claimStrings.indexOf(sSelected));
             if (selected != null) {
                 try {
-                    ModalService.showClaim(claim);
+                    ModalService.showClaim(selected);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
         });
         List<Dependent> dependents = new ArrayList<>();
-        dependents.add(dependent);
         mydependents.setItems(FXCollections.observableList(dependents));
         mydependents.setOnMouseClicked(event -> {
             Dependent selected = mydependents.getSelectionModel().getSelectedItem();
@@ -60,19 +60,8 @@ public class PolicyHolderController implements Initializable {
             }
         });
 
-        myclaims.setOnMouseClicked(event -> {
-            Claim selected = myclaims.getSelectionModel().getSelectedItem();
-            if (selected != null) {
-                try {
-                    ModalService.showClaim(selected);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-
         mydependentsclaims.setOnMouseClicked(event -> {
-            Claim selected = myclaims.getSelectionModel().getSelectedItem();
+            Claim selected = null;
             if (selected != null) {
                 try {
                     ModalService.showClaim(selected);
