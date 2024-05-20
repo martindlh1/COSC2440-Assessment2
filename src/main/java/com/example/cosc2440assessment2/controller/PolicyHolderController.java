@@ -36,9 +36,6 @@ public class PolicyHolderController implements Initializable {
     public Button addDependentClaim;
     public Button updateDependentInfo;
 
-    public PolicyHolderController() throws UnauthorizedException {
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         addDependentClaim.setDisable(true);

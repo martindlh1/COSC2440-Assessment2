@@ -2,10 +2,7 @@ package com.example.cosc2440assessment2.controller;
 
 import com.example.cosc2440assessment2.model.Claim;
 import com.example.cosc2440assessment2.model.ClaimState;
-import com.example.cosc2440assessment2.model.user.Customer;
-import com.example.cosc2440assessment2.model.user.Dependent;
-import com.example.cosc2440assessment2.model.user.PolicyHolder;
-import com.example.cosc2440assessment2.model.user.PolicyOwner;
+import com.example.cosc2440assessment2.model.user.*;
 import com.example.cosc2440assessment2.service.ClaimService;
 import com.example.cosc2440assessment2.service.ModalService;
 import com.example.cosc2440assessment2.service.UserService;
@@ -14,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
@@ -31,26 +29,23 @@ public class PolicyOwnerController implements Initializable {
     public Label yearlyCost;
 
     public ListView<String> myclaims;
-    public ListView<Customer> mybeneficiaries;
-    public ListView<Claim> mybeneficiariesclaims;
+    public ListView<String> mybeneficiaries;
+    public ListView<String> mybeneficiariesclaims;
+
+    public Button addBeneficiaryClaim;
+    public Button updateBeneficiaryInfo;
+
+
+    User selected;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        addBeneficiaryClaim.setDisable(true);
+        updateBeneficiaryInfo.setDisable(true);
         updateMyClaims(null);
-        List<Customer> dependents = new ArrayList<>();
-        ObservableList<Customer> observableList = FXCollections.observableList(dependents);
-        mybeneficiaries.setItems(observableList);
-        mybeneficiaries.setOnMouseClicked(event -> {
-            Customer selected = mybeneficiaries.getSelectionModel().getSelectedItem();
-            if (selected != null) {
-                try {
-                    ModalService.showInfo(selected, null);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+        updateBeneficiaries(null);
+        updateMyBeneficiaryClaims(null);
     }
 
     public void addClaim(ActionEvent event) {
@@ -62,9 +57,11 @@ public class PolicyOwnerController implements Initializable {
     }
 
     public void addBeneficiary(ActionEvent event) {
+
     }
 
-    public void addBeneficiaryClaim(ActionEvent event) {
+    public void addBeneficiaryClaim(ActionEvent event) throws IOException {
+        ModalService.showAddClaim(new Customer(selected), this::updateMyBeneficiaryClaims);
     }
 
     public void calculateYearlyCost(ActionEvent event) {
@@ -93,4 +90,46 @@ public class PolicyOwnerController implements Initializable {
         return null;
     }
 
+    public Void updateBeneficiaries(Void t) {
+        List<User> beneficiaries = userService.getBeneficiariesByOwner(auth.getUser());
+        List<String> beneficiariesString = new ArrayList<>();
+        beneficiaries.forEach(d -> {
+            beneficiariesString.add(d.toString());
+        });
+        mybeneficiaries.setItems(FXCollections.observableList(beneficiariesString));
+        mybeneficiaries.setOnMouseClicked(event -> {
+            String sSelected = mybeneficiaries.getSelectionModel().getSelectedItem();
+            if (sSelected != null) {
+                selected = beneficiaries.get(beneficiariesString.indexOf(sSelected));
+                addBeneficiaryClaim.setDisable(false);
+                updateBeneficiaryInfo.setDisable(false);
+            }
+        });
+        return null;
+    }
+
+    public Void updateMyBeneficiaryClaims(Void t) {
+        List<Claim> beneficiariesclaims = claimService.getBeneficiariesClaimsByOwner(auth.getUser());
+        List<String> claimStrings = new ArrayList<>();
+        beneficiariesclaims.forEach(claim -> {
+            claimStrings.add(claim.toString());
+        });
+        mybeneficiariesclaims.setItems(FXCollections.observableList(claimStrings));
+        mybeneficiariesclaims.setOnMouseClicked(mouseEvent -> {
+            String sSelected = mybeneficiariesclaims.getSelectionModel().getSelectedItem();
+            if (sSelected != null) {
+                try {
+                    Claim selected = beneficiariesclaims.get(claimStrings.indexOf(sSelected));
+                    ModalService.showClaim(selected, this::updateMyBeneficiaryClaims);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        return null;
+    }
+
+    public void updateBeneficiaryInfo(ActionEvent event) throws IOException {
+        ModalService.showInfo(selected, this::updateBeneficiaries);
+    }
 }

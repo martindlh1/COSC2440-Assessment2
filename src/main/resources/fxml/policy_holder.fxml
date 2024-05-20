@@ -9,7 +9,7 @@
     <fx:include source="menubar.fxml"/>
 
     <Label style="-fx-font-weight: bold;" alignment="CENTER">My Claims</Label>
-    <Label alignment="TOP_LEFT">Date - Insured - Amount - Exam Date - State</Label>
+    <Label alignment="TOP_LEFT">Date - Amount - Exam Date - State</Label>
     <ListView maxWidth="500" fx:id="myclaims"/>
     <Button onAction="#addClaim">Add Claim</Button>
 
@@ -25,6 +25,7 @@
     <Separator maxWidth="Infinity"/>
 
     <Label style="-fx-font-weight: bold;" alignment="CENTER">My Dependents Claims</Label>
+    <Label alignment="TOP_LEFT">Date - Dependent - Amount - Exam Date - State</Label>
     <ListView maxWidth="500" fx:id="mydependentsclaims"/>
 
     <padding>

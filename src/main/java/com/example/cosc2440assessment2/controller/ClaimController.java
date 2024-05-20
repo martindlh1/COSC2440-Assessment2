@@ -134,7 +134,10 @@ public class ClaimController {
             function.apply(null);
     }
     public void delete(ActionEvent event) {
-
+        claimService.deleteClaim(claim);
+        ((Stage) grid.getScene().getWindow()).close();
+        if (function != null)
+            function.apply(null);
     }
     public void propose(ActionEvent event) {
 
