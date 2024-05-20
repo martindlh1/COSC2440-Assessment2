@@ -66,17 +66,4 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.setMaximized(!fxml.equals("/fxml/login.fxml"));
     }
-
-    public static void openDialog(String fxml, double width, double height) {
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource(fxml));
-        Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        try {
-            Parent root = loader.load();
-            dialog.setScene(new Scene(root, width, height));
-            dialog.show();
-        } catch (IOException exc) {
-            System.err.println(exc.getMessage());
-        }
-    }
 }
