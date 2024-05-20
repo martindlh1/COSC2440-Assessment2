@@ -37,6 +37,12 @@ public class UserSQLCommand {
                 "where policyowner_beneficiary.\"cpoID\" = " + user.getId() + " and user_.\"uID\" = policyowner_beneficiary.\"cbID\";";
     }
 
+    public static String getSurveyorsByManager(User user) {
+        return "select manager_surveyor.*, user_.* " +
+                "from manager_surveyor, user_ " +
+                "where manager_surveyor.\"managerID\" = " + user.getId() + " and user_.\"uID\" = manager_surveyor.\"pisID\";";
+    }
+
     public static String addUser(User user) {
         return "INSERT INTO user_ (username,password,fullName,role) "
                 + "VALUES ('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getFullName() + "', '" + user.getRole() + "');";

@@ -44,6 +44,10 @@ public class UserService {
         return userRepository.getBeneficiariesByOwner(owner);
     }
 
+    public List<User> getSurveyorsByManager(User manager) {
+        return userRepository.getSurveyorsByManager(manager);
+    }
+
     public List<User> getAllUsers() {
         return userRepository.getAllUsers();
     }

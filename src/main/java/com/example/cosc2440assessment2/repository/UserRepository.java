@@ -71,7 +71,8 @@ public class UserRepository {
             ResultSet res = statement.executeQuery(UserSQLCommand.getBeneficiariesByOwner(owner));
             List<User> beneficiaries = new ArrayList<>();
             while (res.next()) {
-                beneficiaries.add(new User(res.getString("username"),
+                beneficiaries.add(new User(res.getInt("cbID"),
+                        res.getString("username"),
                         res.getString("password"),
                         res.getString("fullname"),
                         res.getString("email"),
@@ -80,6 +81,28 @@ public class UserRepository {
                         Role.valueOf(res.getString("role"))));
             }
             return beneficiaries;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<User> getSurveyorsByManager(User manager) {
+        try {
+            Statement statement = database.getDb().createStatement();
+            ResultSet res = statement.executeQuery(UserSQLCommand.getSurveyorsByManager(manager));
+            List<User> surveyors = new ArrayList<>();
+            while (res.next()) {
+                surveyors.add(new User(
+                        res.getInt("pisID"),
+                        res.getString("username"),
+                        res.getString("password"),
+                        res.getString("fullname"),
+                        res.getString("email"),
+                        res.getString("phone"),
+                        res.getString("address"),
+                        Role.valueOf(res.getString("role"))));
+            }
+            return surveyors;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
