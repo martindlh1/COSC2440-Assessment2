@@ -112,5 +112,13 @@ public class InfoModal implements Initializable {
     }
 
     public void deleteUser(ActionEvent event) {
+        try {
+            userService.deleteUser(user);
+        } catch (UnauthorizedException e) {
+            throw new RuntimeException(e);
+        }
+        ((Stage) username.getScene().getWindow()).close();
+        if (function != null)
+            function.apply(null);
     }
 }

@@ -39,7 +39,7 @@ public class UserService {
     }
 
     public void deleteUser(User user) throws UnauthorizedException {
-        Auth.isAuthorized(new Role[]{Role.ADMIN});
+        Auth.isAuthorized(new Role[]{Role.ADMIN, Role.POLICY_OWNER});
         userRepository.deleteUser(user);
     }
 
