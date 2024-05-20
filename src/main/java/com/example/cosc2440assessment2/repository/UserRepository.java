@@ -29,7 +29,8 @@ public class UserRepository {
             ResultSet res = statement.executeQuery(UserSQLCommand.getDependentsByHolder(holder));
             List<User> dependents = new ArrayList<>();
             while (res.next()) {
-                dependents.add(new User(res.getString("username"),
+                dependents.add(new User(res.getInt("cdID"),
+                        res.getString("username"),
                         res.getString("password"),
                         res.getString("fullname"),
                         res.getString("email"),

@@ -23,16 +23,18 @@ public class ClaimSQLCommand {
     }
 
     public static String getDependentsClaimsByHolder(User user) {
-        return "select claim.*, policyholder_dependent.\"cdID\" " +
-                "from claim, policyholder_dependent " +
+        return "select claim.*, policyholder_dependent.\"cdID\", user_.\"uID\", user_.\"fullname\" " +
+                "from claim, policyholder_dependent, user_ " +
                 "where policyholder_dependent.\"cdID\" = claim.\"cID\" " +
+                "and user_.\"uID\" = claim.\"cID\" " +
                 "and policyholder_dependent.\"cphID\" = " + user.getId() + ";";
     }
 
     public static String getBeneficiariesClaimsByOwnerId(User user) {
-        return "select claim.*, policyowner_beneficiary.\"cbID\" " +
-                "from claim, policyowner_beneficiary " +
+        return "select claim.*, policyowner_beneficiary.\"cbID\", user_.\"uID\", user_.\"fullname\" " +
+                "from claim, policyowner_beneficiary, user_ " +
                 "where policyowner_beneficiary.\"cbID\" = claim.\"cID\" " +
+                "and user_.\"uID\" = claim.\"cID\" " +
                 "and policyowner_beneficiary.\"cpoID\" = " + user.getId() + ";";
     }
 }

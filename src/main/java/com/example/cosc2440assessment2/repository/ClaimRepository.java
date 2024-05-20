@@ -52,7 +52,7 @@ public class ClaimRepository {
             ResultSet res = statement.executeQuery(ClaimSQLCommand.getDependentsClaimsByHolder(user));
             List<Claim> claims = new ArrayList<>();
             while (res.next()) {
-                claims.add(new Claim(res.getInt("id"), res.getDate("date"), res.getInt("cID"), res.getDate("exam_date"), new InsuranceCard(res.getInt("cardID")), null, res.getInt("amount"), null, ClaimState.valueOf(res.getString("status"))));
+                claims.add(new Claim(res.getInt("id"), res.getDate("date"), res.getInt("cID"), res.getString("fullname"), res.getDate("exam_date"), new InsuranceCard(res.getInt("cardID")), null, res.getInt("amount"), null, ClaimState.valueOf(res.getString("status"))));
             }
             return claims;
         } catch (SQLException e) {
@@ -66,7 +66,7 @@ public class ClaimRepository {
             ResultSet res = statement.executeQuery(ClaimSQLCommand.getBeneficiariesClaimsByOwnerId(user));
             List<Claim> claims = new ArrayList<>();
             while (res.next()) {
-                claims.add(new Claim(res.getInt("id"), res.getDate("date"), res.getInt("cID"), res.getDate("exam_date"), new InsuranceCard(res.getInt("cardID")), null, res.getInt("amount"), null, ClaimState.valueOf(res.getString("status"))));
+                claims.add(new Claim(res.getInt("id"), res.getDate("date"), res.getInt("cID"),res.getString("fullname"), res.getDate("exam_date"), new InsuranceCard(res.getInt("cardID")), null, res.getInt("amount"), null, ClaimState.valueOf(res.getString("status"))));
             }
             return claims;
         } catch (SQLException e) {
@@ -80,7 +80,7 @@ public class ClaimRepository {
             ResultSet res = statement.executeQuery(ClaimSQLCommand.getClaimsByUsername(username));
             List<Claim> claims = new ArrayList<>();
             while (res.next()) {
-                claims.add(new Claim(res.getInt("id"), res.getDate("date"), res.getInt("cID"), res.getDate("exam_date"), new InsuranceCard(res.getInt("cardID")), null, res.getInt("amount"), null, ClaimState.valueOf(res.getString("status"))));
+                claims.add(new Claim(res.getInt("id"), res.getDate("date"), res.getInt("cID"), null, res.getDate("exam_date"), new InsuranceCard(res.getInt("cardID")), null, res.getInt("amount"), null, ClaimState.valueOf(res.getString("status"))));
             }
 //            return new User(res.getString("username"), res.getString("password"), res.getString("fullName"), "", "", "", Role.valueOf(res.getString("role")));
             return claims;

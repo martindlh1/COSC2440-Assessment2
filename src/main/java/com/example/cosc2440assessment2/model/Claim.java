@@ -8,6 +8,7 @@ public class Claim {
     private Number id;
     private Date date;
     private Number insured;
+    private String insured_name;
     private Date exam_date;
     private InsuranceCard card;
     private String[] docs;
@@ -15,10 +16,11 @@ public class Claim {
     private BankInfo bankInfo;
     private ClaimState state;
 
-    public Claim(Number id, Date date, Number insured, Date exam_date, InsuranceCard card, String[] docs, Number amount, BankInfo bankInfo, ClaimState state) {
+    public Claim(Number id, Date date, Number insured, String insured_name, Date exam_date, InsuranceCard card, String[] docs, Number amount, BankInfo bankInfo, ClaimState state) {
         this.id = id;
         this.date = date;
         this.insured = insured;
+        this.insured_name = insured_name;
         this.exam_date = exam_date;
         this.card = card;
         this.docs = docs;
@@ -27,9 +29,10 @@ public class Claim {
         this.state = state;
     }
 
-    public Claim(Date date, Number insured, Date exam_date, InsuranceCard card, String[] docs, Number amount, BankInfo bankInfo, ClaimState state) {
+    public Claim(Date date, Number insured, String insured_name, Date exam_date, InsuranceCard card, String[] docs, Number amount, BankInfo bankInfo, ClaimState state) {
         this.date = date;
         this.insured = insured;
+        this.insured_name = insured_name;
         this.exam_date = exam_date;
         this.card = card;
         this.docs = docs;
@@ -110,10 +113,14 @@ public class Claim {
         this.state = state;
     }
 
+    public String getInsured_name() {
+        return insured_name;
+    }
+
     @Override
     public String toString() {
         return date + " - " +
-                (insured == null ? "N/A" : insured) + " - " +
+                (insured_name == null ? "" : insured_name + " - ") +
                 (amount == null ? "N/A" : amount.toString()) + " - " +
                 (exam_date == null ? "N/A" : exam_date) + " - " +
                 state;

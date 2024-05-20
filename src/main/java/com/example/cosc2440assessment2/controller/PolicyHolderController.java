@@ -28,7 +28,6 @@ public class PolicyHolderController implements Initializable {
     private final UserService userService = new UserService();
     private final Auth auth = Auth.getInstance();
     private final ClaimService claimService = new ClaimService();
-    User depent = userService.getUserByUsername("dependent");
     User selected;
 
     public ListView<String> mydependents;
@@ -42,22 +41,12 @@ public class PolicyHolderController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        addDependentClaim.setVisible(false);
-        updateDependentInfo.setVisible(false);
+        addDependentClaim.setDisable(true);
+        updateDependentInfo.setDisable(true);
 
         updateMyClaims(null);
         updateDependents(null);
-
-        mydependentsclaims.setOnMouseClicked(event -> {
-            Claim selected = null;
-            if (selected != null) {
-                try {
-                    ModalService.showClaim(selected, null);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+        updateMyDependentsClaims(null);
     }
 
     public void addClaim(ActionEvent event) {
@@ -69,8 +58,7 @@ public class PolicyHolderController implements Initializable {
     }
 
     public Void updateDependents(Void t) {
-        List<User> dependents = new ArrayList<>();
-        dependents.add(depent);
+        List<User> dependents = userService.getDependentsByHolder(auth.getUser());
         List<String> dependentsString = new ArrayList<>();
         dependents.forEach(d -> {
             dependentsString.add(d.toString());
@@ -80,8 +68,8 @@ public class PolicyHolderController implements Initializable {
             String sSelected = mydependents.getSelectionModel().getSelectedItem();
             if (sSelected != null) {
                 selected = dependents.get(dependentsString.indexOf(sSelected));
-                addDependentClaim.setVisible(true);
-                updateDependentInfo.setVisible(true);
+                addDependentClaim.setDisable(false);
+                updateDependentInfo.setDisable(false);
             }
         });
         return null;
@@ -103,9 +91,27 @@ public class PolicyHolderController implements Initializable {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-            } else {
-                addDependentClaim.setVisible(false);
-                updateDependentInfo.setVisible(false);
+            }
+        });
+        return null;
+    }
+
+    public Void updateMyDependentsClaims(Void t) {
+        List<Claim> dependentsclaims = claimService.getDependentsClaimsByHolder(auth.getUser());
+        List<String> claimStrings = new ArrayList<>();
+        dependentsclaims.forEach(claim -> {
+            claimStrings.add(claim.toString());
+        });
+        mydependentsclaims.setItems(FXCollections.observableList(claimStrings));
+        mydependentsclaims.setOnMouseClicked(mouseEvent -> {
+            String sSelected = mydependentsclaims.getSelectionModel().getSelectedItem();
+            if (sSelected != null) {
+                try {
+                    Claim selected = dependentsclaims.get(claimStrings.indexOf(sSelected));
+                    ModalService.showClaim(selected, this::updateMyDependentsClaims);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         return null;
@@ -116,6 +122,6 @@ public class PolicyHolderController implements Initializable {
     }
 
     public void addDependentClaim() throws IOException {
-        ModalService.showAddClaim(new Dependent(selected), null);
+        ModalService.showAddClaim(new Dependent(selected), this::updateMyDependentsClaims);
     }
 }
