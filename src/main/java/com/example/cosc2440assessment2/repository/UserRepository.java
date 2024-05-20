@@ -17,6 +17,12 @@ public class UserRepository {
     private final Database database = Database.getInstance();
 
     public void addUser(User user) {
+        try {
+            Statement statement = database.getDb().createStatement();
+            statement.executeUpdate(UserSQLCommand.addUser(user));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void deleteUser(User user) {

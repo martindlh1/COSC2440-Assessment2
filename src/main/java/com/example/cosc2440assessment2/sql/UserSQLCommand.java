@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserSQLCommand {
+    public static String addUser(User user) {
+        return "INSERT INTO user_ (username,password,role,phone,address,email,fullname) VALUES ('" + user.getUsername() + "','" + user.getPassword() + "','" + user.getRole().name() + "','" + user.getPhone() + "','" + user.getAddress() + "','" + user.getEmail() + "','" + user.getFullName() + "');";
+    }
     public static String getUserByUsername(String username) {
         return "SELECT * FROM user_ WHERE (username = '" + username + "');";
     }
@@ -41,11 +44,6 @@ public class UserSQLCommand {
         return "select manager_surveyor.*, user_.* " +
                 "from manager_surveyor, user_ " +
                 "where manager_surveyor.\"managerID\" = " + user.getId() + " and user_.\"uID\" = manager_surveyor.\"pisID\";";
-    }
-
-    public static String addUser(User user) {
-        return "INSERT INTO user_ (username,password,fullName,role) "
-                + "VALUES ('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getFullName() + "', '" + user.getRole() + "');";
     }
 
     public static User getUserFromRes(ResultSet res) throws SQLException {
