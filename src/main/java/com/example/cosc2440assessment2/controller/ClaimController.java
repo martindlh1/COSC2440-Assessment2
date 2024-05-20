@@ -20,7 +20,7 @@ public class ClaimController {
     private final ClaimService claimService = new ClaimService();
     private final Auth auth = Auth.getInstance();
     private Claim claim;
-    TextField id;
+    TextField name;
     TextField date;
     TextField insured;
     DatePicker examDate;
@@ -35,7 +35,7 @@ public class ClaimController {
         grid.setVgap(5);
         grid.setPadding(new Insets(25,25,25,25));
         
-        Label lId = new Label("Id");
+        Label lName = new Label("Full Name");
         Label lDate = new Label("Date");
         Label lInsured = new Label("Insured");
         Label lExamDate = new Label("Exam Date");
@@ -43,9 +43,9 @@ public class ClaimController {
         Label lState = new Label("State");
 
 
-        id = new TextField(claim.getId().toString());
-        id.setMaxHeight(10);
-        id.setEditable(false);
+        name = new TextField(claim.getInsured_name() != null ? claim.getInsured_name() : "");
+        name.setMaxHeight(10);
+        name.setEditable(false);
         date = new TextField(claim.getDate().toString());
         date.setMaxHeight(10);
         date.setEditable(false);
@@ -66,8 +66,10 @@ public class ClaimController {
         state.setEditable(false);
         state.setMaxHeight(10);
 
-        grid.add(lId, 0, 0);
-        grid.add(id, 1, 0);
+        if (claim.getInsured_name() != null) {
+            grid.add(lName, 0, 0);
+            grid.add(name, 1, 0);
+        }
         grid.add(lDate, 0, 1);
         grid.add(date, 1, 1);
         grid.add(lInsured, 0, 2);
@@ -124,7 +126,7 @@ public class ClaimController {
     }
     
     public void update(ActionEvent event) {
-        claim.setExam_date(java.sql.Date.valueOf(examDate.getValue()));
+        claim.setExam_date(examDate == null ? null : java.sql.Date.valueOf(examDate.getValue()));
         claim.setAmount(Integer.parseInt(amount.getText()));
         claimService.updateClaim(claim);
         ((Stage) grid.getScene().getWindow()).close();

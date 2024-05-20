@@ -25,9 +25,6 @@ public class AssuranceManagerController implements Initializable {
     private final UserService userService = new UserService();
     private final Auth auth = Auth.getInstance();
 
-    private Claim claim = new Claim(1, new Date(2024, 5, 17), null, new Date(2024, 5, 17), null, new String[]{}, 34, null, ClaimState.APPROVED);
-    private Claim claim2 = new Claim(2, new Date(2024, 5, 17), null, new Date(2024, 5, 17), null, new String[]{}, 56, null, ClaimState.PROPOSED);
-
 
     public ListView<AssuranceSurveyor> surveyors;
     public ListView<Claim> claims;
@@ -36,8 +33,6 @@ public class AssuranceManagerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         List<Claim> claimList = new ArrayList<>();
-        claimList.add(claim);
-        claimList.add(claim2);
         claims.setItems(FXCollections.observableList(claimList));
         claims.setOnMouseClicked(mouseEvent -> {
             Claim selected = claims.getSelectionModel().getSelectedItem();
@@ -53,8 +48,6 @@ public class AssuranceManagerController implements Initializable {
 
     private void updateClaimsList(ClaimFilter filter) {
         List<Claim> claimList = new ArrayList<>();
-        claimList.add(claim);
-        claimList.add(claim2);
 
         claims.setItems(FXCollections.observableList(claimList.stream().filter(c -> {
             if (filter.state.isEmpty())
