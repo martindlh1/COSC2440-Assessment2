@@ -2,6 +2,7 @@ package com.example.cosc2440assessment2.service;
 
 import com.example.cosc2440assessment2.error.UnauthorizedException;
 import com.example.cosc2440assessment2.model.Claim;
+import com.example.cosc2440assessment2.model.user.User;
 import com.example.cosc2440assessment2.repository.ClaimRepository;
 
 import java.util.List;
@@ -18,5 +19,17 @@ public class ClaimService {
 
     public void updateClaim(Claim claim) {
         claimRepository.updateClaim(claim);
+    }
+
+    public void deleteClaim(Claim claim) {
+        claimRepository.deleteClaim(claim);
+    }
+
+    public List<Claim> getDependentsClaimsByHolder(User user) {
+        return claimRepository.getDependentsClaimsByHolder(user);
+    }
+
+    public List<Claim> getBeneficiariesClaimsByOwner(User user) {
+        return claimRepository.getBeneficiariesClaimsByOwner(user);
     }
 }

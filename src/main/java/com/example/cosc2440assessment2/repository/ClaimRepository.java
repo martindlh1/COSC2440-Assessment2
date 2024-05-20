@@ -38,7 +38,12 @@ public class ClaimRepository {
     }
 
     public void deleteClaim(Claim claim) {
-
+        try {
+            Statement statement = database.getDb().createStatement();
+            statement.execute(ClaimSQLCommand.deleteClaim(claim));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<Claim> getDependentsClaimsByHolder(User user) {
@@ -47,7 +52,21 @@ public class ClaimRepository {
             ResultSet res = statement.executeQuery(ClaimSQLCommand.getDependentsClaimsByHolder(user));
             List<Claim> claims = new ArrayList<>();
             while (res.next()) {
-                claims.add(new Claim(res.getInt("id"), res.getDate("date"), null, null, null, null, null, null, ClaimState.APPROVED));
+                claims.add(new Claim(res.getInt("id"), res.getDate("date"), res.getInt("cID"), res.getDate("exam_date"), new InsuranceCard(res.getInt("cardID")), null, res.getInt("amount"), null, ClaimState.valueOf(res.getString("status"))));
+            }
+            return claims;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Claim> getBeneficiariesClaimsByOwner(User user) {
+        try {
+            Statement statement = database.getDb().createStatement();
+            ResultSet res = statement.executeQuery(ClaimSQLCommand.getBeneficiariesClaimsByOwnerId(user));
+            List<Claim> claims = new ArrayList<>();
+            while (res.next()) {
+                claims.add(new Claim(res.getInt("id"), res.getDate("date"), res.getInt("cID"), res.getDate("exam_date"), new InsuranceCard(res.getInt("cardID")), null, res.getInt("amount"), null, ClaimState.valueOf(res.getString("status"))));
             }
             return claims;
         } catch (SQLException e) {
