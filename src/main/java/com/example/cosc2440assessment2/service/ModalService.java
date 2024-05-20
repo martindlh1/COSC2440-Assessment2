@@ -16,13 +16,13 @@ import java.util.List;
 import java.util.function.Function;
 
 public class ModalService {
-    static public void showInfo(User user) throws IOException {
+    static public void showInfo(User user, Function<Void, Void> function) throws IOException {
         FXMLLoader loader = new FXMLLoader(ModalService.class.getResource("/fxml/info_modal.fxml"));
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setScene(new Scene(loader.load()));
         InfoModal controller = loader.getController();
-        controller.init(user);
+        controller.init(user, function);
         dialog.show();
     }
 

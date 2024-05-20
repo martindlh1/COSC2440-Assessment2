@@ -4,6 +4,8 @@ import com.example.cosc2440assessment2.model.Claim;
 import com.example.cosc2440assessment2.model.ClaimState;
 import com.example.cosc2440assessment2.model.user.Customer;
 import com.example.cosc2440assessment2.model.user.Dependent;
+import com.example.cosc2440assessment2.model.user.PolicyHolder;
+import com.example.cosc2440assessment2.model.user.PolicyOwner;
 import com.example.cosc2440assessment2.service.ClaimService;
 import com.example.cosc2440assessment2.service.ModalService;
 import com.example.cosc2440assessment2.service.UserService;
@@ -27,42 +29,23 @@ public class PolicyOwnerController implements Initializable {
     private final ClaimService claimService = new ClaimService();
     private final Auth auth = Auth.getInstance();
     public Label yearlyCost;
-    private Dependent dependent = new Dependent("dependent", "dependent", "dependent", "dependent@gmail.com", "4567890", "3456 FGHJK");
-//    private Claim claim = new Claim(1, new Date(2024, 5, 17), null, new Date(2024, 5, 17), null, new String[]{}, 34, null, ClaimState.APPROVED);
-//    private Claim claim2 = new Claim(2, new Date(2024, 5, 17), null, new Date(2024, 5, 17), null, new String[]{}, 56, null, ClaimState.REFUSED);
 
-    public ListView<Claim> myclaims;
+    public ListView<String> myclaims;
     public ListView<Customer> mybeneficiaries;
     public ListView<Claim> mybeneficiariesclaims;
 
-    public PolicyOwnerController() {
-
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        List<Claim> claims = claimService.getClaimsByUsername(auth.getUser().getUsername());
-
-        myclaims.setItems(FXCollections.observableList(claims));
-        myclaims.setOnMouseClicked(mouseEvent -> {
-            Claim selected = myclaims.getSelectionModel().getSelectedItem();
-            if (selected != null) {
-                try {
-                    ModalService.showClaim(selected, null);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+        updateMyClaims(null);
         List<Customer> dependents = new ArrayList<>();
-        dependents.add(dependent);
         ObservableList<Customer> observableList = FXCollections.observableList(dependents);
         mybeneficiaries.setItems(observableList);
         mybeneficiaries.setOnMouseClicked(event -> {
             Customer selected = mybeneficiaries.getSelectionModel().getSelectedItem();
             if (selected != null) {
                 try {
-                    ModalService.showInfo(selected);
+                    ModalService.showInfo(selected, null);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -71,6 +54,11 @@ public class PolicyOwnerController implements Initializable {
     }
 
     public void addClaim(ActionEvent event) {
+        try {
+            ModalService.showAddClaim(new PolicyOwner(auth.getUser()), this::updateMyClaims);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void addBeneficiary(ActionEvent event) {
@@ -82,4 +70,27 @@ public class PolicyOwnerController implements Initializable {
     public void calculateYearlyCost(ActionEvent event) {
         yearlyCost.setText("3545");
     }
+
+    public Void updateMyClaims(Void t) {
+        List<Claim> claims = claimService.getClaimsByUsername(auth.getUser().getUsername());
+        List<String> claimStrings = new ArrayList<>();
+        claims.forEach(claim -> {
+            claimStrings.add(claim.toString());
+        });
+        myclaims.setItems(FXCollections.observableList(claimStrings));
+        myclaims.setOnMouseClicked(mouseEvent -> {
+            String sSelected = myclaims.getSelectionModel().getSelectedItem();
+            if (sSelected != null) {
+                try {
+                    Claim selected = claims.get(claimStrings.indexOf(sSelected));
+
+                    ModalService.showClaim(selected, this::updateMyClaims);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        return null;
+    }
+
 }

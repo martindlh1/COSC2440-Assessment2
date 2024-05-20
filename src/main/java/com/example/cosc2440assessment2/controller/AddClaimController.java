@@ -73,6 +73,7 @@ public class AddClaimController {
         Claim claim = new Claim(new Date(System.currentTimeMillis()), customer.getId(), java.sql.Date.valueOf(examDate.getValue()), new InsuranceCard(1), null, Integer.valueOf(amount.getText()), null, ClaimState.PENDING);
         claimService.addClaim(claim);
         ((Stage) grid.getScene().getWindow()).close();
-        function.apply(null);
+        if (function != null)
+            function.apply(null);
     }
 }

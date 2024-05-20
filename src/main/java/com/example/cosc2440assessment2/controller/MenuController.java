@@ -19,7 +19,7 @@ public class MenuController implements Initializable {
     public HBox hbox;
 
     public void showInfo(ActionEvent event) throws IOException {
-        ModalService.showInfo(auth.getUser());
+        ModalService.showInfo(auth.getUser(), null);
     }
 
     @Override

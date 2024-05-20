@@ -7,4 +7,8 @@ public class Dependent extends Customer {
     public Dependent(String username, String password, String fullName, String email, String phone, String address) {
         super(username, password, fullName, email, phone, address, Role.DEPENDENT);
     }
+
+    public Dependent(User user) {
+        super(user.getId(), user.getUsername(), user.getPassword(), user.getFullName(), user.getEmail(), user.getPhone(), user.getAddress(), Role.DEPENDENT);
+    }
 }
