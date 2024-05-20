@@ -40,6 +40,20 @@ public class ClaimRepository {
 
     }
 
+    public List<Claim> getDependentsClaimsByHolder(User user) {
+        try {
+            Statement statement = database.getDb().createStatement();
+            ResultSet res = statement.executeQuery(ClaimSQLCommand.getDependentsClaimsByHolder(user));
+            List<Claim> claims = new ArrayList<>();
+            while (res.next()) {
+                claims.add(new Claim(res.getInt("id"), res.getDate("date"), null, null, null, null, null, null, ClaimState.APPROVED));
+            }
+            return claims;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public List<Claim> getClaimsByUsername(String username) {
         try {
             Statement statement = database.getDb().createStatement();

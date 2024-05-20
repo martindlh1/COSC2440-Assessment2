@@ -17,6 +17,16 @@ public class UserSQLCommand {
         return "update user_ set username = '" + user.getUsername() + "', phone = '" + user.getPhone() + "', email = '" + user.getEmail() + "', address = '" + user.getAddress() + "', fullName = '" + user.getFullName() + "' where username = '" + user.getUsername() + "';";
     }
 
+    public static String getDependentsByHolder(User user) {
+        return "select policyholder_dependent.*, user_.* from policyholder_dependent, user_ where \"cphID\" = " + user.getId() + " and user_.\"uID\" = policyholder_dependent.\"cdID\";";
+    }
+
+    public static String getBeneficiariesByOwner(User user) {
+        return "select policyowner_beneficiary.*, user_.* " +
+                "from policyowner_beneficiary, user_ " +
+                "where policyowner_beneficiary.\"cpoID\" = " + user.getId() + " and user_.\"uID\" = policyowner_beneficiary.\"cbID\";";
+    }
+
     public static String getAllUsers() {
         return "SELECT * FROM user_";
     }

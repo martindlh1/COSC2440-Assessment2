@@ -9,6 +9,7 @@ import com.example.cosc2440assessment2.sql.UserSQLCommand;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepository {
@@ -20,6 +21,46 @@ public class UserRepository {
 
     public void deleteUser(User user) {
 
+    }
+
+    public List<User> getDependentsByHolder(User holder) {
+        try {
+            Statement statement = database.getDb().createStatement();
+            ResultSet res = statement.executeQuery(UserSQLCommand.getDependentsByHolder(holder));
+            List<User> dependents = new ArrayList<>();
+            while (res.next()) {
+                dependents.add(new User(res.getString("username"),
+                        res.getString("password"),
+                        res.getString("fullname"),
+                        res.getString("email"),
+                        res.getString("phone"),
+                        res.getString("address"),
+                        Role.valueOf(res.getString("role"))));
+            }
+            return dependents;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<User> getBeneficiariesByOwner(User owner) {
+        try {
+            Statement statement = database.getDb().createStatement();
+            ResultSet res = statement.executeQuery(UserSQLCommand.getBeneficiariesByOwner(owner));
+            List<User> beneficiaries = new ArrayList<>();
+            while (res.next()) {
+                beneficiaries.add(new User(res.getString("username"),
+                        res.getString("password"),
+                        res.getString("fullname"),
+                        res.getString("email"),
+                        res.getString("phone"),
+                        res.getString("address"),
+                        Role.valueOf(res.getString("role"))));
+            }
+            return beneficiaries;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void updateUser(User user) {
