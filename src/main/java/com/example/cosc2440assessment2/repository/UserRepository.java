@@ -38,7 +38,7 @@ public class UserRepository {
             res.next();
             return new User(res.getInt("uID"), res.getString("username"), res.getString("password"), res.getString("fullName"),  res.getString("email"),  res.getString("phone"),  res.getString("address"), Role.valueOf(res.getString("role")));
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return null;
         }
     }
 

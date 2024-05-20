@@ -128,7 +128,8 @@ public class ClaimController {
         claim.setAmount(Integer.parseInt(amount.getText()));
         claimService.updateClaim(claim);
         ((Stage) grid.getScene().getWindow()).close();
-        function.apply(null);
+        if (function != null)
+            function.apply(null);
     }
     public void delete(ActionEvent event) {
 

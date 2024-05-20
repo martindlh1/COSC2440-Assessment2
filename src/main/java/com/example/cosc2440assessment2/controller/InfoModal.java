@@ -19,11 +19,13 @@ import org.w3c.dom.Text;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Function;
 
 public class InfoModal implements Initializable {
     public GridPane grid;
     private final Auth auth = Auth.getInstance();
     private final UserService userService = new UserService();
+    Function<Void, Void> function;
     private User user;
     TextField fullName;
     TextField username;
@@ -31,7 +33,8 @@ public class InfoModal implements Initializable {
     TextField phone;
     TextField address;
 
-    public void init(User u) {
+    public void init(User u, Function<Void, Void> function) {
+        this.function = function;
         user = u;
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(5);
@@ -101,6 +104,8 @@ public class InfoModal implements Initializable {
             throw new RuntimeException(e);
         }
         ((Stage) username.getScene().getWindow()).close();
+        if (function != null)
+            function.apply(null);
     }
 
     public void deleteUser(ActionEvent event) {
