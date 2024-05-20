@@ -15,6 +15,14 @@ public class UserSQLCommand {
     public static String addUser(User user) {
         return "INSERT INTO user_ (username,password,role,phone,address,email,fullname) VALUES ('" + user.getUsername() + "','" + user.getPassword() + "','" + user.getRole().name() + "','" + user.getPhone() + "','" + user.getAddress() + "','" + user.getEmail() + "','" + user.getFullName() + "');";
     }
+    public static String addUserWithReturn(User user) {
+        return "INSERT INTO user_ (username,password,role,phone,address,email,fullname) VALUES ('" + user.getUsername() + "','" + user.getPassword() + "','" + user.getRole().name() + "','" + user.getPhone() + "','" + user.getAddress() + "','" + user.getEmail() + "','" + user.getFullName() + "') returning \"uID\";";
+    }
+
+    public static String addBeneficiaryToOwner(int userId, int ownerId) {
+        return "INSERT INTO policyowner_beneficiary (\"cpoID\",\"cbID\") VALUES (" + ownerId + "," + userId + ");";
+    }
+
     public static String getUserByUsername(String username) {
         return "SELECT * FROM user_ WHERE (username = '" + username + "');";
     }

@@ -31,7 +31,10 @@ public class UserRepository {
     public void addBeneficiaryToOwner(User user, Number owner) {
         try {
             Statement statement = database.getDb().createStatement();
-            statement.executeUpdate(UserSQLCommand.addUser(user));
+            ResultSet res = statement.executeQuery(UserSQLCommand.addUserWithReturn(user));
+            res.next();
+            int id = res.getInt("uID");
+            statement.executeUpdate(UserSQLCommand.addBeneficiaryToOwner(id, owner.intValue()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
