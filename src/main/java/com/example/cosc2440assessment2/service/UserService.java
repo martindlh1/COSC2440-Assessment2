@@ -14,6 +14,7 @@ import java.util.List;
 
 public class UserService {
     private final UserRepository userRepository = UserRepository.getInstance();
+    private final Auth auth = Auth.getInstance();
 
     public User getUserByUsername(String username) throws UnauthorizedException {
         Auth.isAuthorized(new Role[]{});
@@ -31,7 +32,10 @@ public class UserService {
 
     public void addUser(User user) throws UnauthorizedException {
         Auth.isAuthorized(new Role[]{Role.ADMIN, Role.POLICY_OWNER});
-        userRepository.addUser(user);
+        if (auth.getUser().getRole() == Role.POLICY_OWNER)
+            userRepository.addBeneficiaryToOwner(user, auth.getUser().getId());
+        else
+            userRepository.addUser(user);
     }
 
     public PolicyOwner getPolicyOwner(User user) throws UnauthorizedException {
